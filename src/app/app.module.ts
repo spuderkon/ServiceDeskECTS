@@ -29,10 +29,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { registerLocaleData } from '@angular/common';
 import { LOCALE_ID } from '@angular/core';
 import localeRu from '@angular/common/locales/ru';
+import { AuthorizationComponent } from './authorization/authorization.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { CreateApplicationComponent } from './create-application/create-application.component';
+import { PersonalAccountComponent } from './personal-account/personal-account.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AuthorizationComponent,
+    CreateApplicationComponent,
+    PersonalAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +68,7 @@ import localeRu from '@angular/common/locales/ru';
     MatButtonToggleModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatProgressBarModule,
   ],
   providers: [ /*sharedsevice* */ {provide: LOCALE_ID, useValue: 'ru'}],
   bootstrap: [AppComponent]

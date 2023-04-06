@@ -32,7 +32,7 @@ p {
     height: 60px;
     display: flex;
     align-items: center;
-    background-color: #1976d2;
+    background-color: #8d85b5;
     color: white;
     font-weight: 600;
 }
@@ -290,4 +290,16 @@ svg#clouds {
         display: none;
         visibility: hidden;
     }
+}
+
+.person-end{
+    margin: 0 2vw;
+}
+
+::ng-deep .matToolTipLk{
+    font-size: 17px;
+}
+
+.createApplicationButton{
+    margin: 0 2vw;
 }
