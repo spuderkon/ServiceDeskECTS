@@ -1,0 +1,30 @@
+<div class="createApplication">
+    <mat-card class="createApplication-card">
+        <mat-card-header>
+            <mat-card-title>Создание заявки</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="createApplication-card-content">
+            <mat-form-field>
+                <mat-label>Заявитель</mat-label>
+                <input matInput placeholder="Электронная почта" type="declarator" >
+                <button matSuffix mat-icon-button aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Отправитель</mat-label>
+                <input matInput type="sender" >
+                <button matSuffix mat-icon-button aria-label="Clear" >
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-button>Отправить</button>
+        </mat-card-actions>
+        <mat-card-footer>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>

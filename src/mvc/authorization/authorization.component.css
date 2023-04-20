@@ -1,0 +1,42 @@
+body,
+html {
+    padding: 0;
+
+}
+
+mat-card{
+    background-color: #eae9f5;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+mat-card-actions {
+    padding: 0 0;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+}
+
+mat-progress-bar {
+    bottom: 0;
+    position: absolute;
+}
+
+.authorization {
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    position: relative;
+    top: 20%;
+}
+
+.authorization-card {
+    width: 55vmin;
+    height: 25vh;
+}
+
+.authorization-card-content {
+    margin-left: 2vh;
+}

@@ -1,9 +1,3 @@
-body,
-html {
-    padding: 0;
-
-}
-
 mat-card{
     background-color: #eae9f5;
 }
@@ -13,10 +7,10 @@ mat-form-field {
 }
 
 mat-card-actions {
-    padding: 0 0;
+    /* padding: 0 0;
     margin-bottom: 0;
     display: flex;
-    justify-content: center;
+    justify-content: center; */
 }
 
 mat-progress-bar {
@@ -24,16 +18,16 @@ mat-progress-bar {
     position: absolute;
 }
 
-.authorization {
+.createApplication {
     display: flex;
-    justify-content: center;
+    justify-content: center; 
 }
 
-.authorization-card {
-    width: 55vmin;
-    min-height: 16vw;
+.createApplication-card {
+    width: 50vw;
+    height: 50vh;
 }
 
-.authorization-card-content {
+.createApplication-card-content {
     margin-left: 2vh;
 }
