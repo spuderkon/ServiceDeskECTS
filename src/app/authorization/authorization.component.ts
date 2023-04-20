@@ -20,11 +20,7 @@ export class AuthorizationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clearLogin(): void{
-    this.login.setValue('');
-  }
-
-  clearPassword(): void{
-    this.password.setValue('');
+  clearValue(value: FormControl): void{
+    value.setValue('');
   }
 }

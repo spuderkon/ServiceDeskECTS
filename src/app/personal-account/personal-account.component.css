@@ -1,0 +1,26 @@
+mat-form-field {
+    width: 350px;
+}
+
+.personal-account {
+    display: flex;
+    justify-content: center;
+}
+
+.user-icon {
+    width: 270px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    display: flex;
+    justify-content: center;
+    background-color: #eae9f5;
+}
+
+.personal-area {
+    display: flex;
+}
+
+.personal-info {
+    display: grid;
+    margin-left: 10vw;
+}

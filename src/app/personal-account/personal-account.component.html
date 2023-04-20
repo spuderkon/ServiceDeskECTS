@@ -1,5 +1,34 @@
 <div class="personal-account">
-<div style=" width: 270px; border-radius: 10px; border: 2px solid transparent; display: flex; justify-content: center; background-color:#eae9f5 ;">
-    <img width="320px" src="/assets/icons/user.png" style="margin: 15px 0;">
-</div>
+    <div class="personal-area">
+        <div class="user-icon">
+            <img width="300px" src="/assets/icons/qwe.png" style="margin: 1.5vh 0;">
+        </div>
+        <div class="personal-info">
+            <h2>Личные данные</h2>
+            <mat-form-field>
+                <mat-label>Имя</mat-label>
+                <input matInput type="name" disabled="{{true}}">
+                <button matSuffix mat-icon-button aria-label="Edit" disabled="{{true}}">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Фамилия</mat-label>
+                <input matInput type="surname" disabled="{{true}}">
+                <button matSuffix mat-icon-button aria-label="Edit" disabled="{{true}}">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Отчество</mat-label>
+                <input matInput type="lastname" disabled="{{true}}">
+                <button matSuffix mat-icon-button aria-label="Edit" disabled="{{true}}">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-form-field>
+            <div align="end">
+                <button mat-button disabled="{{true}}">Сохранить</button>
+            </div>
+        </div>
+    </div>
 </div>
