@@ -1,5 +1,7 @@
 mat-card{
     background-color: #eae9f5;
+    width: 50vw;
+    height: 50vh;
 }
 
 mat-form-field {
@@ -7,10 +9,9 @@ mat-form-field {
 }
 
 mat-card-actions {
-    /* padding: 0 0;
-    margin-bottom: 0;
     display: flex;
-    justify-content: center; */
+    justify-content: center;
+    margin-bottom: 0;
 }
 
 mat-progress-bar {
@@ -18,16 +19,11 @@ mat-progress-bar {
     position: absolute;
 }
 
+mat-card-content{
+    margin: 2vh 0;
+}
+
 .createApplication {
     display: flex;
     justify-content: center; 
-}
-
-.createApplication-card {
-    width: 50vw;
-    height: 50vh;
-}
-
-.createApplication-card-content {
-    margin-left: 2vh;
 }

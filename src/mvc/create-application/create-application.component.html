@@ -1,26 +1,36 @@
 <div class="createApplication">
-    <mat-card class="createApplication-card">
+    <mat-card>
         <mat-card-header>
             <mat-card-title>Создание заявки</mat-card-title>
         </mat-card-header>
-        <mat-card-content class="createApplication-card-content">
+        <mat-card-content>
+            <mat-form-field appearance="fill">
+                <mat-label>Кабинет</mat-label>
+                <mat-select>
+                    <mat-option value="316">316</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Описание</mat-label>
+                <textarea matInput placeholder="" style="height: 10vh;"></textarea>
+            </mat-form-field>
             <mat-form-field>
                 <mat-label>Заявитель</mat-label>
-                <input matInput placeholder="Электронная почта" type="declarator" >
-                <button matSuffix mat-icon-button aria-label="Clear">
+                <input matInput placeholder="Электронная почта" type="declarator" disabled>
+                <button matSuffix mat-icon-button aria-label="Clear" disabled>
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Отправитель</mat-label>
-                <input matInput type="sender" >
-                <button matSuffix mat-icon-button aria-label="Clear" >
+                <input matInput type="sender" disabled>
+                <button matSuffix mat-icon-button aria-label="Clear" disabled>
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
             <mat-divider></mat-divider>
         </mat-card-content>
-        <mat-card-actions align="end">
+        <mat-card-actions>
             <button mat-button>Отправить</button>
         </mat-card-actions>
         <mat-card-footer>

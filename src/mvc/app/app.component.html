@@ -8,9 +8,37 @@
     <mat-icon>add</mat-icon>Создать заявку
   </button>
   <div class="spacer"></div>
-  <a routerLink="/lk" class="person-end" matTooltip="Личный кабинет" matTooltipClass="matToolTipLk">
-    <mat-icon height="50" width="50" style="color: white;">person</mat-icon>
-  </a>
+  <div class="menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/lk">
+        <mat-icon>person</mat-icon>
+        <span>Личный кабинет</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>event_available</mat-icon>
+        <span>Отправленные заявки</span>
+      </button>
+      <button mat-menu-item routerLink="/application">
+        <mat-icon>event_note</mat-icon>
+        <span>Заявки</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>event_available</mat-icon>
+        <span>Принятые заявки</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>group</mat-icon>
+        <span>CRUD пользователей</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        <span>Выйти</span>
+      </button>
+    </mat-menu>
+  </div>
 </div>
 
 <div class="content" role="main">
