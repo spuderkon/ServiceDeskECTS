@@ -1,0 +1,58 @@
+<div class="users-list">
+    <div>
+        <div style="display: flex;">
+            <h2>Пользователи:</h2>
+            <button mat-raised-button class="create-user">Добавить пользователя <mat-icon>add</mat-icon></button>
+        </div>
+
+        <div class="users-table">
+            <mat-accordion class="example-headers-align" multi>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{user.name}} {{user.surname}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{user.email}}
+                            <img *ngIf="user.roleId == 1" width="20" src="assets/icons/employee.png">
+                            <img *ngIf="user.roleId == 2" width="30" src="assets/icons/systemAdministrator.png">
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="expansion-description">
+                        <mat-form-field appearance="fill">
+                            <mat-label>First name</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>First name</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>First name</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>First name</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>First name</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Self aware panel
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <p>I'm visible because I am open</p>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+</div>

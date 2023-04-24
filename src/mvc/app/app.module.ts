@@ -37,13 +37,22 @@ import { DeclarantService } from '../services/declarant/declarant.service';
 import { ContractorService } from '../services/contractor/contractor.service';
 import { AdministratorService } from '../services/administrator/administrator.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { ApplicationsComponent } from '../applications/applications.component'
+import { ApplicationComponent } from '../application/application.component';
+import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
+import { UsersListComponent } from '../users-list/users-list.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthorizationComponent,
     CreateApplicationComponent,
-    PersonalAccountComponent
+    PersonalAccountComponent,
+    ApplicationsComponent,
+    ApplicationComponent,
+    SubmittedApplicationsComponent,
+    UsersListComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +83,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatTooltipModule,
     MatProgressBarModule,
     MatMenuModule,
+    MatExpansionModule,
   ],
   providers: [[DeclarantService, ContractorService, AdministratorService], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]

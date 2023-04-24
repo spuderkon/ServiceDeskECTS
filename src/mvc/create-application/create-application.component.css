@@ -1,7 +1,7 @@
 mat-card{
     background-color: #eae9f5;
     width: 50vw;
-    height: 50vh;
+    height: 55vh;
 }
 
 mat-form-field {
@@ -11,7 +11,6 @@ mat-form-field {
 mat-card-actions {
     display: flex;
     justify-content: center;
-    margin-bottom: 0;
 }
 
 mat-progress-bar {
