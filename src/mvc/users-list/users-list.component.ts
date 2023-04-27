@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user/user.model';
+import { MatDialog,MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-users-list',
@@ -11,7 +12,7 @@ export class UsersListComponent implements OnInit {
   user: User;
   qwe: string;
   panelOpenState: boolean;
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.user = new User();
     this.user.name = 'Matthew'
     this.user.surname = 'Varganov';
@@ -24,5 +25,18 @@ export class UsersListComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.user);
   }
+
+
+  openCreateUserDialog(): void{
+    const dialogRef = this.dialog.open(CreateUserDialog, {height: '78vh', width: '65vw'})
+  }
+}
+
+@Component({
+  selector: 'createUserDialog',
+  templateUrl: 'createUserDialog.html',
+})
+
+export class CreateUserDialog {
 
 }

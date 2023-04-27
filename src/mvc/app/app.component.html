@@ -1,4 +1,4 @@
- <div class="toolbar" role="banner" >  <!--*ngIf="router.url != '/auth'" -->
+ <div class="toolbar" role="banner" *ngIf="router.url != '/auth'">
   <!-- <img
     width="70"
     alt="Angular Logo"
@@ -33,7 +33,7 @@
         <mat-icon>group</mat-icon>
         <span>CRUD пользователей</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Выйти</span>
       </button>

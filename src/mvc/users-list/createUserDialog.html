@@ -1,0 +1,72 @@
+<style>
+    .user-info div mat-form-field {
+        margin: 0 1vw;
+    }
+
+    button{
+        float: right;
+        margin-top: 2vh;
+    }
+</style>
+
+<div class="create-user-dialog">
+    <h2>Создание пользователя</h2>
+    <div class="user-info">
+        <div>
+            <h4>Контактная информация</h4>
+            <mat-form-field appearance="fill">
+                <mat-label>Имя</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Фамилия</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Отчество</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Эл. почта</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div>
+            <h4>Входные данные:</h4>
+            <mat-form-field appearance="fill">
+                <mat-label>Логин</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Пароль</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div>
+            <h4>О пользователе:</h4>
+            <mat-form-field appearance="fill">
+                <mat-label>Комментарий</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Должность</mat-label>
+                <mat-select>
+                    <mat-option value="">Преподаватель</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Отделение</mat-label>
+                <mat-select>
+                    <mat-option value="">Администрация</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Роль</mat-label>
+                <mat-select>
+                    <mat-option value="">Заявитель</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <button mat-raised-button>Сохранить</button>
+    </div>
+</div>

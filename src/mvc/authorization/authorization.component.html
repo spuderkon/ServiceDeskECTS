@@ -6,22 +6,24 @@
         <mat-card-content class="authorization-card-content">
             <mat-form-field appearance="outline">
                 <mat-label>Логин</mat-label>
-                <input matInput placeholder="Электронная почта" type="login" [formControl]="login">
-                <button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue(login)">
+                <input matInput placeholder="Введите UserName" type="login" [formControl]="userLogin">
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue(userLogin)">
                     <mat-icon>close</mat-icon>
                 </button>
+                <mat-error *ngIf="userLogin.invalid"><strong>{{getLoginErrorMessage()}}</strong></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Пароль</mat-label>
-                <input matInput type="password" [formControl]="password">
-                <button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue(password)">
+                <input matInput placeholder="Введите пароль" type="password" [formControl]="userPassword">
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue(userPassword)">
                     <mat-icon>close</mat-icon>
                 </button>
+                <mat-error *ngIf="userPassword.invalid">Поле <strong>Пароль</strong> является обязательным.</mat-error>
             </mat-form-field>
             <mat-divider></mat-divider>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button [disabled]="login.hasError('required') || login.hasError('email') || password.hasError('required')">Войти</button>
+            <button mat-button [disabled]="userLogin.hasError('required') || userLogin.hasError('pattern') || userPassword.hasError('required')" (click)="login()">Войти</button>
         </mat-card-actions>
         <mat-card-footer>
             <mat-progress-bar mode="query"></mat-progress-bar>

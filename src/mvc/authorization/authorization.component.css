@@ -1,5 +1,6 @@
 
 mat-card{
+    min-width: 30vh;
     background-color: #eae9f5;
 }
 

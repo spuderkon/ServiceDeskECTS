@@ -40,7 +40,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ApplicationsComponent } from '../applications/applications.component'
 import { ApplicationComponent } from '../application/application.component';
 import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
-import { UsersListComponent } from '../users-list/users-list.component';
+import { UsersListComponent, CreateUserDialog } from '../users-list/users-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
@@ -53,6 +53,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ApplicationComponent,
     SubmittedApplicationsComponent,
     UsersListComponent,
+    CreateUserDialog,
   ],
   imports: [
     BrowserModule,
@@ -85,7 +86,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatMenuModule,
     MatExpansionModule,
   ],
-  providers: [[DeclarantService, ContractorService, AdministratorService], { provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [[AuthorizationComponent,DeclarantService, ContractorService, AdministratorService], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
