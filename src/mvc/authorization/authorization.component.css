@@ -1,8 +1,3 @@
-body,
-html {
-    padding: 0;
-
-}
 
 mat-card{
     background-color: #eae9f5;
@@ -13,8 +8,7 @@ mat-form-field {
 }
 
 mat-card-actions {
-    padding: 0 0;
-    margin-bottom: 0;
+    
     display: flex;
     justify-content: center;
 }
@@ -33,8 +27,8 @@ mat-progress-bar {
 }
 
 .authorization-card {
-    width: 55vmin;
-    height: 25vh;
+    width: 30vw;
+    height: 35vh;
 }
 
 .authorization-card-content {
