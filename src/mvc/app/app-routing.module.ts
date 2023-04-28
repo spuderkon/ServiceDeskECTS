@@ -7,15 +7,18 @@ import { ApplicationsComponent } from '../applications/applications.component';
 import { ApplicationComponent } from '../application/application.component';
 import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
 import { UsersListComponent } from '../users-list/users-list.component';
+import { AuthguardGuard } from '../services/guard/authguard/authguard.guard';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
+  {path: '', component: AppComponent, canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
   {path: 'auth', component: AuthorizationComponent},
-  {path: 'createApplication', component: CreateApplicationComponent},
-  {path: 'lk', component: PersonalAccountComponent},
-  {path: 'applications', component: ApplicationsComponent},
-  {path: 'application/:id', component: ApplicationComponent},
-  {path: 'submittedApplications', component: SubmittedApplicationsComponent},
-  {path: 'usersList', component: UsersListComponent},
+  {path: 'createApplication', component: CreateApplicationComponent, canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
+  {path: 'lk', component: PersonalAccountComponent, canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
+  {path: 'applications', component: ApplicationsComponent, canActivate:[AuthguardGuard], data: {role: ['laborant','admin']}},
+  {path: 'application/:id', component: ApplicationComponent, data: {role: ['laborant','admin']}},
+  {path: 'submittedApplications', component: SubmittedApplicationsComponent,  canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
+  {path: 'usersList', component: UsersListComponent, canActivate:[AuthguardGuard], data: {role: ['admin']}},
 ];
 
 @NgModule({

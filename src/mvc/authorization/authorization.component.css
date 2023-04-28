@@ -1,3 +1,6 @@
+::ng-deep html, body{
+    height: 80vh !important;
+}
 
 mat-card{
     min-width: 30vh;
@@ -24,12 +27,12 @@ mat-progress-bar {
     justify-content: center;
     vertical-align: middle;
     position: relative;
-    top: 20%;
+    top: 10%;
 }
 
 .authorization-card {
     width: 30vw;
-    height: 35vh;
+    height: 40vh;
 }
 
 .authorization-card-content {

@@ -42,6 +42,8 @@ import { ApplicationComponent } from '../application/application.component';
 import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
 import { UsersListComponent, CreateUserDialog } from '../users-list/users-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthguardGuard } from '../services/guard/authguard/authguard.guard';
 
 @NgModule({
   declarations: [
@@ -85,8 +87,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatProgressBarModule,
     MatMenuModule,
     MatExpansionModule,
+    MatSnackBarModule,
   ],
-  providers: [[AuthorizationComponent,DeclarantService, ContractorService, AdministratorService], { provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [[AuthorizationComponent, DeclarantService, ContractorService, AdministratorService, AuthguardGuard], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
