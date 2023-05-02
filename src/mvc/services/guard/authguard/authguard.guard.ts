@@ -19,15 +19,11 @@ export class AuthguardGuard implements CanActivate {
       let url: string = state.url;
       let availableRoles: string[] = route.data['role']
       let currentRole: string = this.authService.getRole();
-      console.log('av roles ',availableRoles);
-      console.log('cur role ',currentRole);
       return this.checkUserAccess(availableRoles,currentRole);
     }
     this.router.navigate(['/auth']);
     return false;
   }
-
-
 
   checkUserAccess(availableRoles: string[], currentRole: string): boolean {
     if (availableRoles.includes(currentRole)) {

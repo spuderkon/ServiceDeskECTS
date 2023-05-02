@@ -9,10 +9,11 @@ import { SubmittedApplicationsComponent } from '../submitted-applications/submit
 import { UsersListComponent } from '../users-list/users-list.component';
 import { AuthguardGuard } from '../services/guard/authguard/authguard.guard';
 import { AppComponent } from './app.component';
+import { IsSignedInAuthGuard } from '../services/guard/IsSignedInAuth/is-signed-in-auth.guard';
 
 const routes: Routes = [
   {path: '', component: AppComponent, canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
-  {path: 'auth', component: AuthorizationComponent},
+  {path: 'auth', component: AuthorizationComponent, canActivate:[IsSignedInAuthGuard]},
   {path: 'createApplication', component: CreateApplicationComponent, canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
   {path: 'lk', component: PersonalAccountComponent, canActivate:[AuthguardGuard], data: {role: ['client','laborant','admin']}},
   {path: 'applications', component: ApplicationsComponent, canActivate:[AuthguardGuard], data: {role: ['laborant','admin']}},

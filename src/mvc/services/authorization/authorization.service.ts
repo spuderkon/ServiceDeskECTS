@@ -66,11 +66,14 @@ export class AuthorizationService {
 
   getRole(): string {
     try {
-      const role = localStorage.getItem('role');
-      return String(role);
+      return String(localStorage.getItem('role'));
     }
     catch (Error) {
       return '';
     }
+  }
+
+  isNotClient(): boolean {
+    return this.getRole() != 'client'
   }
 }

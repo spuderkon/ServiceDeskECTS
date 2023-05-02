@@ -30,7 +30,9 @@ export class AuthorizationComponent implements OnInit {
     this.authService.login(this.userLogin.value, this.userPassword.value)
       .subscribe({
         next: () => (this.router.navigate(['/'])),
-        error: (error) => (this.snackBar.open("Ошибка " + error.status, 'Ок', {panelClass: ['error-snack-bar']}), this.dataIsLoading = false),
+        error: (error) => (
+          console.log(error),
+          this.snackBar.open('Данные введены неверно', 'Ок', {panelClass: ['error-snack-bar']}), this.dataIsLoading = false),
       });
   }
 

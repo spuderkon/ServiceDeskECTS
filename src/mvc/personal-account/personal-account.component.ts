@@ -8,21 +8,37 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./personal-account.component.css']
 })
 export class PersonalAccountComponent implements OnInit {
-  
+
   userName: FormControl;
   userSurname: FormControl;
-  userLastName: FormControl;
+  userLastname: FormControl;
   userEmail: FormControl;
+  isClient: boolean;
 
-  constructor(private authService: AuthorizationService) { 
-    this.userName = new FormControl('', [Validators.required]);
-    this.userSurname = new FormControl('', [Validators.required]);
-    this.userLastName = new FormControl('', [Validators.required])
-    this.userEmail = new FormControl('', [Validators.required])
+  constructor(public authService: AuthorizationService) {
+    this.isClient = this.authService.getRole() == 'client';
+    this.userName = new FormControl({ value: '', disabled: true }, [Validators.required]);
+    this.userSurname = new FormControl({ value: '', disabled: true }, [Validators.required]);
+    this.userLastname = new FormControl({ value: '', disabled: true }, [Validators.required])
+    this.userEmail = new FormControl({ value: '', disabled: true }, [Validators.required])
   }
 
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    //if(this.authService.isClient)
+    console.log(this.authService.getRole());
   }
 
+  public refreshData(): void {
+
+  }
+
+  public refreshAvailability(value: FormControl): void{
+    if(value.disabled) value.enable();
+    else value.disable();
+  }
+
+  public saveUserData(): void {
+
+  }
 }
