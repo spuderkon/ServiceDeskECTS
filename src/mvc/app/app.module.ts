@@ -33,9 +33,6 @@ import { AuthorizationComponent } from '../authorization/authorization.component
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CreateApplicationComponent } from '../create-application/create-application.component';
 import { PersonalAccountComponent } from '../personal-account/personal-account.component';
-import { DeclarantService } from '../services/declarant/declarant.service';
-import { ContractorService } from '../services/contractor/contractor.service';
-import { AdministratorService } from '../services/administrator/administrator.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { ApplicationsComponent } from '../applications/applications.component'
 import { ApplicationComponent } from '../application/application.component';
@@ -43,7 +40,7 @@ import { SubmittedApplicationsComponent } from '../submitted-applications/submit
 import { UsersListComponent, CreateUserDialog } from '../users-list/users-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthguardGuard } from '../services/guard/authguard/authguard.guard';
+import { AuthGuard } from '../services/guards/auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -89,7 +86,7 @@ import { AuthguardGuard } from '../services/guard/authguard/authguard.guard';
     MatExpansionModule,
     MatSnackBarModule,
   ],
-  providers: [[AuthorizationComponent, DeclarantService, ContractorService, AdministratorService, AuthguardGuard], { provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [[AuthorizationComponent, AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

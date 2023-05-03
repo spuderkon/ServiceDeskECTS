@@ -1,7 +1,7 @@
 mat-card{
     background-color: #eae9f5;
     width: 50vw;
-    height: 55vh;
+    max-height:60vh;
 }
 
 mat-form-field {

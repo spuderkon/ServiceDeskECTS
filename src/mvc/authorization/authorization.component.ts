@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthorizationService } from '../services/authorization/authorization.service';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ export class AuthorizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    console.log(localStorage.getItem('password'));
   }
 
   login(): void {
