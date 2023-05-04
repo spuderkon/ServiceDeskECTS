@@ -6,7 +6,6 @@ import { catchError, share, shareReplay, tap } from 'rxjs/operators';
 import * as moment from "moment";
 import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
-
 import * as crypto from 'crypto-js';
 
 @Injectable({
@@ -14,7 +13,7 @@ import * as crypto from 'crypto-js';
 })
 export class AuthorizationService {
 
-  private apiUrl: string = 'https://localhost:44399/';
+  private apiUrl: string = 'https://localhost:5001/';
   private params = new HttpParams()
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -29,15 +28,16 @@ export class AuthorizationService {
   private setSession(token: string, userName: string, password: string): void {
     const encrypted = crypto.AES.encrypt(password, 'password');
     localStorage.setItem('token', token);
-    const decodedToken = this.getDecodedAccessToken();
+    const decodedToken = this.getDecodedToken();
     const expiresAt = moment().add(decodedToken.exp, 'seconds');
     localStorage.setItem('userName', userName);
     localStorage.setItem('password', encrypted.toString());
     localStorage.setItem('role', decodedToken.role);
-    localStorage.setItem("expires_At", JSON.stringify(expiresAt.valueOf()));
+    localStorage.setItem("expires_At", JSON.stringify(decodedToken.exp * 1000));
   }
 
   public refreshToken(): void {
+    console.log('refreshing...')
     const bytes = crypto.AES.decrypt(localStorage.getItem('password')!, 'password');
     let userName: string = localStorage.getItem('userName')!;
     let password: string = bytes.toString(crypto.enc.Utf8);
@@ -50,7 +50,7 @@ export class AuthorizationService {
   }
 
   public isLoggedIn(): boolean {
-    if (moment().isBefore(this.getExpiration())) {
+    if (this.getExpirationDate() > new Date()) {
       return true;
     }
     else{
@@ -68,26 +68,23 @@ export class AuthorizationService {
   }
 
 
-  public getDecodedAccessToken(): any {
+  public getDecodedToken(): any {
     return jwt_decode(localStorage.getItem('token')!);
   }
 
-  public getExpiration(): moment.Moment {
-    const expiration = localStorage.getItem("expires_At");
-    const expiresAt = JSON.parse(expiration!);
-    return moment(expiresAt);
+  public getExpirationDate(): Date {
+    return new Date(Number(localStorage.getItem('expires_At')));
   }
 
   public getRole(): string {
-    try {
-      return String(localStorage.getItem('role'));
-    }
-    catch (Error) {
-      return '';
-    }
+    return String(localStorage.getItem('role'));
   }
 
   public isNotClient(): boolean {
-    return this.getRole() != 'client'
+    return this.getRole() != 'client';
+  }
+
+  public isAdmin(): boolean {
+    return this.getRole() == 'admin';
   }
 }

@@ -13,10 +13,10 @@ export class PersonalAccountComponent implements OnInit {
   userSurname: FormControl;
   userLastname: FormControl;
   userEmail: FormControl;
-  isClient: boolean;
+  isAdmin: boolean;
 
   constructor(public authService: AuthorizationService) {
-    this.isClient = this.authService.getRole() == 'client';
+    this.isAdmin = this.authService.isAdmin();
     this.userName = new FormControl({ value: '', disabled: true }, [Validators.required]);
     this.userSurname = new FormControl({ value: '', disabled: true }, [Validators.required]);
     this.userLastname = new FormControl({ value: '', disabled: true }, [Validators.required])
