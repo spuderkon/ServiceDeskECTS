@@ -33,6 +33,7 @@ export class AuthorizationService {
     localStorage.setItem('userName', userName);
     localStorage.setItem('password', encrypted.toString());
     localStorage.setItem('role', decodedToken.role);
+    localStorage.setItem('id', decodedToken.id)
     localStorage.setItem("expires_At", JSON.stringify(decodedToken.exp * 1000));
   }
 
