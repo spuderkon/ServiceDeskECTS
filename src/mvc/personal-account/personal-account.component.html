@@ -7,7 +7,7 @@
             <h2>Личные данные</h2>
             <mat-form-field>
                 <mat-label>Имя</mat-label>
-                <input matInput type="name" [formControl]="userName">
+                <input matInput type="name" [formControl]="userName" (change)="change()">
                 <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!isAdmin" (click)="refreshAvailability(userName)">
                     <mat-icon *ngIf="userName.disabled">edit</mat-icon>
                     <mat-icon *ngIf="userName.enabled">close</mat-icon>
@@ -38,7 +38,7 @@
                 </button>
             </mat-form-field>
             <div align="end" style="margin-top: 2.5vh;">
-                <button mat-button [disabled]="isAdmin" (click)="saveUserData()">Сохранить</button>
+                <button mat-button [disabled]="!isAdmin" (click)="savePersonData()">Сохранить</button>
             </div>
         </div>
     </div>
