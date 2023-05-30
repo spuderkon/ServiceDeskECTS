@@ -7,7 +7,7 @@ export class Person {
   surname: string | null;
   lastname: string | null;
   postId: number | null
-  post: PostOrDepartment;
+  post: PostOrDepartment | null;
   departmentId: number | null;
   department: PostOrDepartment;
   email: string | null;
@@ -27,14 +27,14 @@ export class Person {
     this.surname= person.surname == null ? null : person.surname;
     this.lastname = person.lastname == null ? null : person.lastname;
     this.postId = person.postId == null ? null : person.postId;
-    this.post = person.post == null ? new PostOrDepartment() : person.post;
+    this.post = person.post == null ? null : person.post;
     this.departmentId = person.departmentId == null ? null : person.departmentId;
     this.department = person.department == null ? new PostOrDepartment() : person.department;
     this.email = person.email == null ? null : person.email;
     this.comment = person.comment == null ? null : person.comment;
     this.userName = person.userName == null ? null : person.userName;
     this.roleId = person.roleId == null ? null : person.roleId;
-    this.role = person.role == null ? new Role() : person.role;
+    this.role = person.role == null ? null : person.role;
     this.password = person.password == null ? null : person.password;
     this.passwordSalt = person.passwordSalt == null ? null : person.passwordSalt;
     this.requests = person.requests == null ? new Array<string> : person.requests;

@@ -27,12 +27,12 @@ mat-progress-bar {
     justify-content: center;
     vertical-align: middle;
     position: relative;
-    top: 10%;
+    top: 20%;
 }
 
 .authorization-card {
     width: 30vw;
-    height: 40vh;
+    min-height: 100%;
 }
 
 .authorization-card-content {

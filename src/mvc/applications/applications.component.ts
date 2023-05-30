@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthorizationService } from '../services/authorization/authorization.service';
+import { AuthService } from '../services/auth/auth.service';
 import { now } from 'moment';
 
 @Component({
@@ -9,7 +9,7 @@ import { now } from 'moment';
 })
 export class ApplicationsComponent implements OnInit {
 
-  constructor(private authService: AuthorizationService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }

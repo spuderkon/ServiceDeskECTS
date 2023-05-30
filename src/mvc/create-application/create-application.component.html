@@ -6,32 +6,38 @@
         <mat-card-content>
             <mat-form-field appearance="fill">
                 <mat-label>Кабинет</mat-label>
-                <mat-select>
-                    <mat-option value="316">316</mat-option>
+                <mat-select [formControl]="selectedPlace">
+                    <mat-option [value]="item.id" *ngFor="let item of places">
+                        <span *ngIf="item.description == null">Кабинет - {{item.name}}</span>
+                        <span *ngIf="item.description != null">{{item.description}} - {{item.name}}</span>
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="example-full-width">
                 <mat-label>Описание</mat-label>
-                <textarea matInput placeholder="" style="height: 10vh;"></textarea>
+                <textarea matInput [formControl]="desription" placeholder="" style="height: 10vh;" maxlength="255" style="resize: none; height: 10vh;"></textarea>
+                <mat-hint align="end">{{desription.value.length}} / 255</mat-hint>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Заявитель</mat-label>
-                <input matInput placeholder="Электронная почта" type="declarator" disabled>
+                <input matInput placeholder="Электронная почта" type="declarator" [value]="fullPersonName" disabled>
                 <button matSuffix mat-icon-button aria-label="Clear" disabled>
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
-            <mat-form-field>
+            <!-- <mat-form-field >
                 <mat-label>Отправитель</mat-label>
-                <input matInput type="sender" disabled>
-                <button matSuffix mat-icon-button aria-label="Clear" disabled>
-                    <mat-icon>close</mat-icon>
-                </button>
-            </mat-form-field>
+                <mat-select>
+                    <mat-option [value]="item.id" *ngFor="let item of places">
+                        <span *ngIf="item.description == null">Кабинет - {{item.name}}</span>
+                        <span *ngIf="item.description != null">{{item.description}} - {{item.name}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
             <mat-divider></mat-divider>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button>Отправить</button>
+            <button mat-raised-button [disabled]="selectedPlace.hasError('required') || desription.hasError('required')" (click)="sendApplication()">Отправить</button>
         </mat-card-actions>
         <mat-card-footer>
             <mat-progress-bar mode="query" *ngIf="false"></mat-progress-bar>

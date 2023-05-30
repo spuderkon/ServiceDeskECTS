@@ -8,7 +8,7 @@ import { Person } from 'src/mvc/models/person/person.model';
 })
 export class PersonService {
 
-  public apiUrl: string = 'https://localhost:5001/crud/Person';
+  private apiUrl: string = 'https://localhost:5001/crud/Person';
   private headers = new HttpHeaders().set('Authorization', 'Bearer '+ localStorage.getItem('token'));
   private params = new HttpParams();
 
@@ -19,7 +19,11 @@ export class PersonService {
     return this.http.get<Person>(this.apiUrl + '/GetMy', {headers: this.headers});
   }
 
+  public GetAll(): Observable<Person[]>{
+    return this.http.get<Person[]>(this.apiUrl + '/GetAll', {headers: this.headers})
+  }
+
   public Update(id: number, person: Person): Observable<Person>{
-    return this.http.put<Person>(this.apiUrl + '/Update/' + id, person, {headers: this.headers});
+    return this.http.put<Person>(this.apiUrl + '/Update/' + id,person, {headers: this.headers});
   }
 }

@@ -11,7 +11,7 @@ import * as crypto from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorizationService {
+export class AuthService {
 
   private apiUrl: string = 'https://localhost:5001/';
   private httpParams = new HttpParams();
@@ -95,8 +95,8 @@ export class AuthorizationService {
     return String(localStorage.getItem('role'));
   }
 
-  public isNotClient(): boolean {
-    return this.getRole() != 'client';
+  public isClient(): boolean {
+    return this.getRole() == 'client';
   }
 
   public isAdmin(): boolean {

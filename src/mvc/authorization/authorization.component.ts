@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { AuthorizationService } from '../services/authorization/authorization.service';
+import { AuthService } from '../services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ export class AuthorizationComponent implements OnInit {
   userPassword: FormControl;
   dataIsLoading: boolean = false;
 
-  constructor(private authService: AuthorizationService, private snackBar: MatSnackBar, private router: Router) {
+  constructor(private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
     this.userLogin = new FormControl('GarievDenis', [Validators.required, Validators.pattern('^[a-zA-Z]+$')])
     this.userPassword = new FormControl('123', [Validators.required])
   }

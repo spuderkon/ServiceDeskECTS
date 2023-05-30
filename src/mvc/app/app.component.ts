@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthorizationService } from '../services/authorization/authorization.service';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { AuthorizationService } from '../services/authorization/authorization.se
 export class AppComponent implements OnInit {
   title = 'ServiceDeskECTS';
 
-  constructor(public router:Router, private authService: AuthorizationService){
+  constructor(public router:Router, private authService: AuthService){
 
   }
 

@@ -7,8 +7,8 @@
             <h2>Личные данные</h2>
             <mat-form-field>
                 <mat-label>Имя</mat-label>
-                <input matInput type="name" [formControl]="userName" (change)="change()">
-                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!isAdmin" (click)="refreshAvailability(userName)">
+                <input matInput type="name" [formControl]="userName">
+                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!authService.isAdmin" (click)="refreshAvailability(userName)">
                     <mat-icon *ngIf="userName.disabled">edit</mat-icon>
                     <mat-icon *ngIf="userName.enabled">close</mat-icon>
                 </button>
@@ -16,7 +16,7 @@
             <mat-form-field>
                 <mat-label>Фамилия</mat-label>
                 <input matInput type="surname" [formControl]="userSurname">
-                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!isAdmin" (click)="refreshAvailability(userSurname)">
+                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!authService.isAdmin" (click)="refreshAvailability(userSurname)">
                     <mat-icon *ngIf="userSurname.disabled">edit</mat-icon>
                     <mat-icon *ngIf="userSurname.enabled">close</mat-icon>
                 </button>
@@ -24,7 +24,7 @@
             <mat-form-field>
                 <mat-label>Отчество</mat-label>
                 <input matInput type="lastname" [formControl]="userLastname">
-                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!isAdmin" (click)="refreshAvailability(userLastname)">
+                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!authService.isAdmin" (click)="refreshAvailability(userLastname)">
                     <mat-icon *ngIf="userLastname.disabled">edit</mat-icon>
                     <mat-icon *ngIf="userLastname.enabled">cancel</mat-icon>
                 </button>
@@ -32,7 +32,7 @@
             <mat-form-field>
                 <mat-label>Электронная почта</mat-label>
                 <input matInput type="email" [formControl]="userEmail">
-                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!isAdmin" (click)="refreshAvailability(userEmail)">
+                <button matSuffix mat-icon-button aria-label="Edit" [disabled]="!authService.isAdmin" (click)="refreshAvailability(userEmail)">
                     <mat-icon *ngIf="userEmail.disabled">edit</mat-icon>
                     <mat-icon *ngIf="userEmail.enabled">close</mat-icon>
                 </button>
