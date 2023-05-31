@@ -1,3 +1,7 @@
+mat-expansion-panel{
+  margin-bottom: 5px;
+}
+
 .users-list{
     display: flex;
     justify-content: center;
@@ -8,9 +12,13 @@
   justify-content: space-between;
 }
 
-/* .users-table{
+/* .persons{
    
 } */
+
+.person{
+  margin-bottom: 50px;
+}
 
 .expansion-description{
   display: block;

@@ -6,20 +6,24 @@ import { PersonalAccountComponent } from '../personal-account/personal-account.c
 import { ApplicationsComponent } from '../applications/applications.component';
 import { ApplicationComponent } from '../application/application.component';
 import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
-import { UsersListComponent } from '../users-list/users-list.component';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
 import { AppComponent } from './app.component';
 import { IsSignedInAuthGuard } from '../services/guards/isSignedInAuth/is-signed-in-auth.guard';
+import { MyApplicationsComponent } from '../my-applications/my-applications.component';
+import { CrudPersonsComponent } from '../crud-persons/crud-persons.component';
 
 const routes: Routes = [
-  {path: '', component: AppComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
   {path: 'auth', component: AuthorizationComponent, canActivate:[IsSignedInAuthGuard]},
-  {path: 'createApplication', component: CreateApplicationComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
+  {path: '', component: AppComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
   {path: 'lk', component: PersonalAccountComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
-  {path: 'applications', component: ApplicationsComponent, canActivate:[AuthGuard], data: {role: ['laborant','admin']}},
-  {path: 'application/:id', component: ApplicationComponent, data: {role: ['laborant','admin']}},
+  {path: 'createApplication', component: CreateApplicationComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
   {path: 'submittedApplications', component: SubmittedApplicationsComponent,  canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
-  {path: 'usersList', component: UsersListComponent, canActivate:[AuthGuard], data: {role: ['admin']}},
+
+  {path: 'application/:id', component: ApplicationComponent, data: {role: ['laborant','admin']}},
+  {path: 'applications', component: ApplicationsComponent, canActivate:[AuthGuard], data: {role: ['laborant','admin']}},
+  {path: 'myApplications', component: MyApplicationsComponent,  canActivate:[AuthGuard], data: {role: ['laborant','admin']}},
+
+  {path: 'crudPersons', component: CrudPersonsComponent, canActivate:[AuthGuard], data: {role: ['admin']}},
 ];
 
 @NgModule({

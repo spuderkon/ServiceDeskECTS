@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Request } from '../models/request/request.model';
 import { RequestService } from '../services/http/request/request.service';
+import { Request } from '../models/request/request.model';
 
 @Component({
-  selector: 'app-submitted-applications',
-  templateUrl: './submitted-applications.component.html',
-  styleUrls: ['./submitted-applications.component.css']
+  selector: 'app-my-applications',
+  templateUrl: './my-applications.component.html',
+  styleUrls: ['./my-applications.component.css']
 })
-export class SubmittedApplicationsComponent implements OnInit {
+export class MyApplicationsComponent implements OnInit {
 
   requests: Request[];
 
@@ -22,5 +22,5 @@ export class SubmittedApplicationsComponent implements OnInit {
       this.requests = data;
     })
   }
-  
+
 }

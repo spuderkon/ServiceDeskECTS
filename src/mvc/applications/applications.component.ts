@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
 import { now } from 'moment';
+import { RequestService } from '../services/http/request/request.service';
+import { Request } from '../models/request/request.model';
 
 @Component({
   selector: 'app-applications',
@@ -9,9 +11,18 @@ import { now } from 'moment';
 })
 export class ApplicationsComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  requests: Request[];
+
+  constructor(private requestService:RequestService) { }
 
   ngOnInit(): void {
+    this.refreshRequests();
+  }
+
+  private refreshRequests(): void {
+    this.requestService.GetMyAll().subscribe(data =>{
+      this.requests = data;
+    })
   }
 
 }

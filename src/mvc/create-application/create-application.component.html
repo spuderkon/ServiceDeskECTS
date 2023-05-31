@@ -7,7 +7,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Кабинет</mat-label>
                 <mat-select [formControl]="selectedPlace">
-                    <mat-option [value]="item.id" *ngFor="let item of places">
+                    <mat-option [value]="item" *ngFor="let item of places">
                         <span *ngIf="item.description == null">Кабинет - {{item.name}}</span>
                         <span *ngIf="item.description != null">{{item.description}} - {{item.name}}</span>
                     </mat-option>
@@ -17,27 +17,28 @@
                 <mat-label>Описание</mat-label>
                 <textarea matInput [formControl]="desription" placeholder="" style="height: 10vh;" maxlength="255" style="resize: none; height: 10vh;"></textarea>
                 <mat-hint align="end">{{desription.value.length}} / 255</mat-hint>
-            </mat-form-field>
-            <mat-form-field>
+            </mat-form-field>      
+            <mat-form-field class="example-full-width" >
                 <mat-label>Заявитель</mat-label>
-                <input matInput placeholder="Электронная почта" type="declarator" [value]="fullPersonName" disabled>
-                <button matSuffix mat-icon-button aria-label="Clear" disabled>
-                    <mat-icon>close</mat-icon>
-                </button>
-            </mat-form-field>
-            <!-- <mat-form-field >
-                <mat-label>Отправитель</mat-label>
-                <mat-select>
-                    <mat-option [value]="item.id" *ngFor="let item of places">
-                        <span *ngIf="item.description == null">Кабинет - {{item.name}}</span>
-                        <span *ngIf="item.description != null">{{item.description}} - {{item.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field> -->
+                <input matInput
+                       [matAutocomplete]="auto"
+                       [formControl]="selectedPerson">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let person of filteredPersons | async" [value]="person">
+                    <img *ngIf="person.postId == 1" class="autocomplete-image" src="/assets/icons/teacher.png" height="25">
+                    <img *ngIf="person.postId == 2 || person.postId == 18" class="autocomplete-image" src="/assets/icons/systemAdministrator.png" height="25">
+                    <img *ngIf="person.postId != 2 && person.postId != 18 && person.postId != 1" class="autocomplete-image" src="/assets/icons/employee.png" height="25">
+                    <span>{{person.surname}} {{person.name}} {{person.lastname}}</span> |
+                    <small>{{person.post?.name}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field> 
+
             <mat-divider></mat-divider>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button [disabled]="selectedPlace.hasError('required') || desription.hasError('required')" (click)="sendApplication()">Отправить</button>
+            <button mat-raised-button (click)="sendApplication()">Отправить</button> 
+            <!-- [disabled]="selectedPlace.hasError('required') || desription.hasError('required')" (click)="sendApplication()" -->
         </mat-card-actions>
         <mat-card-footer>
             <mat-progress-bar mode="query" *ngIf="false"></mat-progress-bar>

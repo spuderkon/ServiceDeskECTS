@@ -37,10 +37,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ApplicationsComponent } from '../applications/applications.component'
 import { ApplicationComponent } from '../application/application.component';
 import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
-import { UsersListComponent, CreateUserDialog } from '../users-list/users-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
+import { MyApplicationsComponent } from '../my-applications/my-applications.component';
+import { CrudPersonsComponent, CreateUserDialog } from '../crud-persons/crud-persons.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { AuthGuard } from '../services/guards/auth/auth.guard';
     ApplicationsComponent,
     ApplicationComponent,
     SubmittedApplicationsComponent,
-    UsersListComponent,
+    MyApplicationsComponent,
+    CrudPersonsComponent,
     CreateUserDialog,
   ],
   imports: [

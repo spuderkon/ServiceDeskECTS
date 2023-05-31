@@ -1,10 +1,10 @@
 <div class="submittedApplication">
-    <h1>Непринятые заявки:</h1>
+    <h1>Активные:</h1>
     <mat-divider></mat-divider>
     <div class="requests">
         <mat-card class="request" *ngFor="let item of requests">
-            <mat-card-header>
-                <mat-card-subtitle>Номер заявки: {{item.id}}</mat-card-subtitle>
+            <mat-card-header style="margin-left: 0px !important;">
+                <mat-card-subtitle style="margin-left: 0px !important;">Номер заявки: {{item.id}}</mat-card-subtitle>
                 <mat-card-title>Shiba Inu</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -21,12 +21,12 @@
         </mat-card>
     </div>
     <mat-divider></mat-divider>
-    <h1>Заявки Матвея:</h1>
+    <h1>Завершенные:</h1>
     <mat-divider></mat-divider>
     <div class="requests">
         <mat-card class="request" *ngFor="let item of requests">
-            <mat-card-header>
-                <mat-card-subtitle>Номер заявки: {{item.id}}</mat-card-subtitle>
+            <mat-card-header style="margin-left: 0px !important;">
+                <mat-card-subtitle style="margin-left: 0px !important;">Номер заявки: {{item.id}}</mat-card-subtitle>
                 <mat-card-title>Shiba Inu</mat-card-title>
             </mat-card-header>
             <mat-card-content>

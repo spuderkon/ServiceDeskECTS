@@ -2,7 +2,7 @@ export class Place {
     id: number | null;
     name: string | null;
     description: string | null;
-    requests: string[] | null;
+    requests: Request[] | null;
     shortTermMoves: string[] | null;
     unitPlaces: string[] | null;
 
@@ -10,7 +10,7 @@ export class Place {
         this.id = null;
         this.name = null;
         this.description = null;
-        this.requests = new Array<string>;
+        this.requests = new Array<Request>;
         this.shortTermMoves = new Array<string>;
         this.unitPlaces = new Array<string>;
     }
