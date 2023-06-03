@@ -1,5 +1,5 @@
 import { Person } from "../person/person.model";
-import { Service } from "../requsetServiceType/service.model";
+import { Service } from "../workOnRequsetServiceType/service.model";
 
 export class WorkOnRequest {
     id: number | null;

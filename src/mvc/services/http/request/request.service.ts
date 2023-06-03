@@ -20,7 +20,30 @@ export class RequestService {
     return this.http.get<Request[]>(this.apiUrl + '/GetMyAll', {headers: this.headers});
   }
 
-  public AddMy(request: Request){
-    return this.http.post<any>(this.apiUrl + '/AddMy', request, {headers: this.headers})
+  public GetMyActiveAll(): Observable<Request[]>{
+    return this.http.get<Request[]>(this.apiUrl + '/GetMyActiveAll', {headers: this.headers});
+  }
+
+  public GetMyCompletedAll(): Observable<Request[]>{
+    return this.http.get<Request[]>(this.apiUrl + '/GetMyCompletedAll', {headers: this.headers});
+  }
+
+  public Add(declarantId: number,description: string, placeId: number): Observable<Request>{
+    const body = {
+                    "declarantId": declarantId,
+                    "description": description,
+                    "placeId" : placeId,
+                  };
+    this.params = new HttpParams().set('description', description);
+    return this.http.post<Request>(this.apiUrl + '/Add', body, {headers: this.headers})
+  }
+
+  public AddMy(description: string, placeId: number): Observable<Request>{
+    const body = {
+                    "description": description,
+                    "placeId" : placeId,
+                 };
+    this.params = new HttpParams().set('description', description);
+    return this.http.post<Request>(this.apiUrl + '/AddMy', body, {headers: this.headers})
   }
 }

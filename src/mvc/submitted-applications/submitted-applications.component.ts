@@ -9,18 +9,30 @@ import { RequestService } from '../services/http/request/request.service';
 })
 export class SubmittedApplicationsComponent implements OnInit {
 
-  requests: Request[];
+  activeRequests: Request[];
+  completedRequests: Request[];
 
   constructor(private requestService:RequestService) { }
 
   ngOnInit(): void {
-    this.refreshRequests();
+    this.refreshActiveRequests();
   }
 
-  private refreshRequests(): void {
-    this.requestService.GetMyAll().subscribe(data =>{
-      this.requests = data;
-    })
+  private refreshActiveRequests(): void {
+    this.requestService.GetMyActiveAll().subscribe(data =>{
+      this.activeRequests = data;
+    });
   }
+
+  public refreshCompletedRequests(): void {
+    this.requestService.GetMyCompletedAll().subscribe(data =>{
+      this.completedRequests = data;
+    });
+  }
+
   
+  
+  public openRequestInfo(request: Request){
+    
+  }
 }

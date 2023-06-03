@@ -25,4 +25,7 @@ export class ApplicationsComponent implements OnInit {
     })
   }
 
+  qwe(){
+    console.log('qwe');
+  }
 }

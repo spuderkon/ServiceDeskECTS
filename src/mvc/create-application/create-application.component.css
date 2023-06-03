@@ -1,7 +1,12 @@
+textarea{
+    resize: none; 
+    height: 10vh;
+}
+
 mat-card {
-    background-color: #eae9f5;
-    width: 50vw;
-    max-height: 60vh;
+    background-color: #dfe9f3;
+    width: 30vw;
+    height: 40vh;
 }
 
 mat-form-field {

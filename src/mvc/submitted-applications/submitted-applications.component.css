@@ -1,17 +1,35 @@
+mat-card:hover{
+    background-color: aliceblue;
+}
+
+
+
 .submittedApplication{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
+    width: 87%;
 }
 
 .requests{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
+
+
 .request{
-    width: 25vw;
+    width: 15vw;
     height: 25vh;
     margin: 5px;
+}
+
+.autorenew-button{
+    margin-top: 1vh;
+    background-color: transparent;
+}
+
+.autorenew-button:hover{
+   background-color: rgb(216, 234, 248);
 }

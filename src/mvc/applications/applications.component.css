@@ -1,3 +1,7 @@
+mat-card:hover{
+    background-color: aliceblue;
+}
+
 .submittedApplication{
     display: block;
     margin-left: auto;
@@ -8,6 +12,7 @@
 .requests{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .request{

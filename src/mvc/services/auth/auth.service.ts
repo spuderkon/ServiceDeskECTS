@@ -55,7 +55,7 @@ export class AuthService {
     this.httpParams = new HttpParams().set('username', userName).set('password', password);
     console.log(this.httpParams);
     this.http.post(this.apiUrl + 'Auth/Authorize', this.httpParams)
-    .subscribe((token: any) => (this.setSession(token.token,userName,password)));
+    .subscribe((token: any) => (console.log(token.token),this.setSession(token.token,userName,password)));
   }
 
   public logout(): void {
@@ -65,7 +65,7 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     if (this.getExpirationDate() > new Date()) {
-      // this.testRefreshingToken();
+      //this.testRefreshingToken();
       return true;
     }
     else {

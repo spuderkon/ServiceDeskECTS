@@ -10,6 +10,8 @@ import { map, startWith } from 'rxjs/operators';
 import { NgFor, AsyncPipe } from '@angular/common';
 import { Request } from '../models/request/request.model';
 import { RequestService } from '../services/http/request/request.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-application',
@@ -29,7 +31,9 @@ export class CreateApplicationComponent implements OnInit {
   public personCtrl = new FormControl;
   public filteredPersons: Observable<Person[]>;
 
-  constructor(private placeService: PlaceService, private personService: PersonService, public authSerivce: AuthService, private requestService: RequestService) {
+  constructor(private placeService: PlaceService, private personService: PersonService, 
+              public authSerivce: AuthService, private requestService: RequestService,
+              private snackBar: MatSnackBar, private router: Router) {
     this.selectedPlace = new FormControl('', [Validators.required]);
     this.desription = new FormControl('', [Validators.required]);
     this.selectedPerson = new FormControl({ value: '', disabled: this.authSerivce.isClient() }, [Validators.required])
@@ -83,16 +87,29 @@ export class CreateApplicationComponent implements OnInit {
   }
 
   public sendApplication(): void {
-    console.log(this.selectedPlace.value, this.selectedPerson.value.id, this.desription.value);
-    let request: Request = new Request();
-    request.placeId = this.selectedPlace.value.id;
-    request.declarantId = this.selectedPerson.value.id;
-    request.description = this.desription.value;
-    request.place = this.selectedPlace.value;
-    request.declarant = this.selectedPerson.value
-    console.log(request);
-    this.requestService.AddMy(request).subscribe(response => {
-      console.log(response);
-    })
+    if(this.person == this.selectedPerson.value){
+      this.requestService.AddMy(this.desription.value, this.selectedPlace.value.id)
+          .subscribe({
+              next: (data) => {this.snackBar.open('Заявка отправлена', 'Ок', {duration: 5000, panelClass: "classicSnackBar"}).afterDismissed().subscribe(
+               {
+                next: () => {this.router.navigate(['/submittedApplications'])},
+                error: () => {}
+               }
+              )},
+              error: (error) => {this.snackBar.open('Ошибка', 'Далее', {duration: 5000, panelClass: "classicSnackBar"})},
+          });
+    }
+    else{
+      this.requestService.Add(this.selectedPerson.value.id,this.desription.value, this.selectedPlace.value.id)
+          .subscribe({
+              next: (data) => {this.snackBar.open('Заявка отправлена', 'Ок', {duration: 5000, panelClass: "classicSnackBar"}).afterDismissed().subscribe(
+               {
+                next: () => {this.router.navigate(['/submittedApplications'])},
+                error: () => {}
+               }
+              )},
+              error: (error) => {this.snackBar.open('Ошибка', 'Далее', {duration: 5000, panelClass: "classicSnackBar"})},
+          });
+    }
   }
 }

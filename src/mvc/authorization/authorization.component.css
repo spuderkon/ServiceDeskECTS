@@ -4,7 +4,7 @@
 
 mat-card{
     min-width: 30vh;
-    background-color: #eae9f5;
+    background-color: #dfe9f3;
 }
 
 mat-form-field {
@@ -18,8 +18,8 @@ mat-card-actions {
 }
 
 mat-progress-bar {
-    bottom: 0;
     position: absolute;
+    bottom: 0;
 }
 
 .authorization {
@@ -31,7 +31,7 @@ mat-progress-bar {
 }
 
 .authorization-card {
-    width: 30vw;
+    max-width: 30vw;
     min-height: 100%;
 }
 

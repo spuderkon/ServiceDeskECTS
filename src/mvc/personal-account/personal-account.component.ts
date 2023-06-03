@@ -28,7 +28,6 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     this.refreshPerson();
-    console.log(localStorage.getItem('token'));
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
