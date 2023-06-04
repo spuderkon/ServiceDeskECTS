@@ -31,21 +31,21 @@ export class CreateApplicationComponent implements OnInit {
   public personCtrl = new FormControl;
   public filteredPersons: Observable<Person[]>;
 
-  constructor(private placeService: PlaceService, private personService: PersonService, 
-              public authSerivce: AuthService, private requestService: RequestService,
-              private snackBar: MatSnackBar, private router: Router) {
+  constructor(private placeService: PlaceService, private personService: PersonService,
+    public authSerivce: AuthService, private requestService: RequestService,
+    private snackBar: MatSnackBar, private router: Router) {
     this.selectedPlace = new FormControl('', [Validators.required]);
     this.desription = new FormControl('', [Validators.required]);
     this.selectedPerson = new FormControl({ value: '', disabled: this.authSerivce.isClient() }, [Validators.required])
   }
 
   ngOnInit(): void {
-    this.refreshPlace();
+    this.refreshPlaces();
     this.refreshPerson();
     this.refreshPersons();
   }
 
-  private refreshPlace(): void {
+  private refreshPlaces(): void {
     this.placeService.GetAll().subscribe(data => {
       this.places = data;
       console.log(this.places[0]);
@@ -87,29 +87,33 @@ export class CreateApplicationComponent implements OnInit {
   }
 
   public sendApplication(): void {
-    if(this.person == this.selectedPerson.value){
+    if (this.person == this.selectedPerson.value) {
       this.requestService.AddMy(this.desription.value, this.selectedPlace.value.id)
-          .subscribe({
-              next: (data) => {this.snackBar.open('Заявка отправлена', 'Ок', {duration: 5000, panelClass: "classicSnackBar"}).afterDismissed().subscribe(
-               {
-                next: () => {this.router.navigate(['/submittedApplications'])},
-                error: () => {}
-               }
-              )},
-              error: (error) => {this.snackBar.open('Ошибка', 'Далее', {duration: 5000, panelClass: "classicSnackBar"})},
-          });
+        .subscribe({
+          next: (data) => {
+            this.snackBar.open('Заявка отправлена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }).afterDismissed().subscribe(
+              {
+                next: () => { this.router.navigate(['/submittedApplications']) },
+                error: () => { }
+              }
+            )
+          },
+          error: (error) => { this.snackBar.open('Ошибка', 'Далее', { duration: 5000, panelClass: "classicSnackBar" }) },
+        });
     }
-    else{
-      this.requestService.Add(this.selectedPerson.value.id,this.desription.value, this.selectedPlace.value.id)
-          .subscribe({
-              next: (data) => {this.snackBar.open('Заявка отправлена', 'Ок', {duration: 5000, panelClass: "classicSnackBar"}).afterDismissed().subscribe(
-               {
-                next: () => {this.router.navigate(['/submittedApplications'])},
-                error: () => {}
-               }
-              )},
-              error: (error) => {this.snackBar.open('Ошибка', 'Далее', {duration: 5000, panelClass: "classicSnackBar"})},
-          });
+    else {
+      this.requestService.Add(this.selectedPerson.value.id, this.desription.value, this.selectedPlace.value.id)
+        .subscribe({
+          next: (data) => {
+            this.snackBar.open('Заявка отправлена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }).afterDismissed().subscribe(
+              {
+                next: () => { this.router.navigate(['/submittedApplications']) },
+                error: () => { }
+              }
+            )
+          },
+          error: (error) => { this.snackBar.open('Ошибка', 'Далее', { duration: 5000, panelClass: "classicSnackBar" }) },
+        });
     }
   }
 }

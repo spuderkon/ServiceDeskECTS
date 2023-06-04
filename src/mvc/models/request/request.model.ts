@@ -1,5 +1,6 @@
 import { Person } from "../person/person.model";
 import { Place } from "../place/place.model";
+import { RequestStatus } from "../requestStatus/request-status.model";
 import { WorkOnRequest } from "../workOnRequest/work-on-request.model";
 
 export class Request {
@@ -10,9 +11,11 @@ export class Request {
     dateTimeEnd: Date | null;
     placeId: number | null;
     isComplete: boolean | null;
+    requestStatusId: number | null;
     declarant: Person | null;
-    place: Place | null;
-    workOnRequests: WorkOnRequest[] | WorkOnRequest | null;
+    place: Place;
+    requestStatus: RequestStatus;
+    workOnRequests: Array<WorkOnRequest>;
 
     constructor() {
         this.id = null;
@@ -22,8 +25,10 @@ export class Request {
         this.dateTimeEnd = null;
         this.placeId = null;
         this.isComplete = null;
+        this.requestStatusId = null;
         this.declarant = null;
-        this.place = null;
+        this.place = new Place;
+        this.requestStatus = new RequestStatus();
         this.workOnRequests = new Array<WorkOnRequest>;
     }
 }

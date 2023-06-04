@@ -26,8 +26,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { registerLocaleData } from '@angular/common';
 import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { AuthorizationComponent } from '../authorization/authorization.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -36,12 +36,14 @@ import { PersonalAccountComponent } from '../personal-account/personal-account.c
 import { MatMenuModule } from '@angular/material/menu';
 import { ApplicationsComponent } from '../applications/applications.component'
 import { ApplicationComponent } from '../application/application.component';
-import { SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
+import { ChangeRequestDialog, CompleteRequestDialog, RequestInfoDialog, SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
 import { MyApplicationsComponent } from '../my-applications/my-applications.component';
 import { CrudPersonsComponent, CreateUserDialog } from '../crud-persons/crud-persons.component';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -52,6 +54,9 @@ import { CrudPersonsComponent, CreateUserDialog } from '../crud-persons/crud-per
     ApplicationsComponent,
     ApplicationComponent,
     SubmittedApplicationsComponent,
+    ChangeRequestDialog,
+    RequestInfoDialog,
+    CompleteRequestDialog,
     MyApplicationsComponent,
     CrudPersonsComponent,
     CreateUserDialog,
