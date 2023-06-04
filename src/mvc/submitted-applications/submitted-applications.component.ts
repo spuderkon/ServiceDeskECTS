@@ -99,31 +99,35 @@ export class ChangeRequestDialog implements OnInit {
   public desription: FormControl;
 
   public filteredPersons: Observable<Person[]>;
+  public filteredPlaces: Observable<Place[]>;
 
   constructor(private placeService: PlaceService, @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private personService: PersonService, public authSerivce: AuthService, private requestService: RequestService,
               private snackBar: MatSnackBar, private router: Router) {
     this.request = data.request;
-    this.place = this.request.place;
     this.persons = new Array<Person>;
     this.places = new Array<Place>;
     this.selectedPlace = new FormControl('', [Validators.required]);
     this.desription = new FormControl(this.request.description, [Validators.required]);
     this.selectedPerson = new FormControl({ value: '', disabled: this.authSerivce.isClient() }, [Validators.required]);
     this.filteredPersons = new Observable<Person[]>;
+    this.filteredPlaces = new Observable<Place[]>;
   }
 
   ngOnInit(): void {
     this.refreshPlaces();
     this.refreshPerson();
     this.refreshPersons();
-    this.selectedPlace.setValue(this.place);
+    this.selectedPlace.setValue(this.request.place)
   }
 
   private refreshPlaces(): void {
     this.placeService.GetAll().subscribe(data => {
       this.places = data;
-      this.selectedPlace.setValue(this.request.place);
+      this.filteredPlaces = this.selectedPlace.valueChanges.pipe(
+        startWith(''),
+        map(place => (this.filterPlaces(place || ''))),
+      );
     });
   }
 
@@ -155,9 +159,28 @@ export class ChangeRequestDialog implements OnInit {
     return this.persons.filter(person => (person.surname! + ' ' + person.name! + ' ' + person.lastname!).toLowerCase().includes(filterValue));
   }
 
+  private filterPlaces(value: any): Place[] {
+    let filterValue = '';
+    try {
+      filterValue = value.toLowerCase();
+    }
+    catch {
+      if(value.description == null) filterValue = ('Кабинет №' + value.name).toLowerCase();
+      else filterValue = (value.description + ' №' + value.name).toLowerCase();
+    }
+    if(value.description == null) return this.places.filter(place => ('Кабинет №' + place.name!).toLowerCase().includes(filterValue));
+    return this.places.filter(place => (place.name!).toLowerCase().includes(filterValue));
+  }
+
   public displayPersonFn(person: Person): string {
     if (person.name == undefined) return '';
     return person.surname + ' ' + person.name + ' ' + person.lastname;
+  }
+
+  public displayPlaceFn(place: Place): string {
+    if (place == undefined) return '';
+    else if (place.description == null) return 'Кабинет ' + '№' + place.name;
+    return place.description + ' №' + place.name;
   }
 
   public sendApplication(): void {
