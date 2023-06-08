@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { FormControl, Validators } from '@angular/forms';
 import { PersonService } from '../services/http/person/person.service';
 import { Person } from '../models/person/person.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-personal-account',
@@ -15,14 +16,13 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
   userSurname: FormControl;
   userLastname: FormControl;
   userEmail: FormControl;
-  isAdmin: boolean;
   person: Person;
 
-  constructor(public authService: AuthService, private personService: PersonService) {
-    this.userName = new FormControl({ value: '', disabled: true }, [Validators.required]);
-    this.userSurname = new FormControl({ value: '', disabled: true }, [Validators.required]);
-    this.userLastname = new FormControl({ value: '', disabled: true }, [Validators.required]);
-    this.userEmail = new FormControl({ value: '', disabled: true }, [Validators.required]);
+  constructor(public authService: AuthService, private personService: PersonService, private snackBar: MatSnackBar) {
+    this.userName = new FormControl('', [Validators.required]);
+    this.userSurname = new FormControl('', [Validators.required]);
+    this.userLastname = new FormControl('', [Validators.required]);
+    this.userEmail = new FormControl('', [Validators.required]);
   }
 
 
@@ -38,7 +38,6 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
   public refreshPerson(): void {
     this.personService.GetMy().subscribe(data => {
       this.person = new Person(data);
-      console.log(data, 'person');
       this.refreshFormControlsValue();
     });
   }
@@ -51,10 +50,10 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
 
   //Обновление значений FormControls
   public refreshFormControlsValue(): void{
-    this.userName = new FormControl({ value: this.person.name, disabled: true }, [Validators.required]);
-    this.userSurname = new FormControl({ value: this.person.surname, disabled: true }, [Validators.required]);
-    this.userLastname = new FormControl({ value: this.person.lastname, disabled: true }, [Validators.required]);
-    this.userEmail = new FormControl({ value: this.person.email, disabled: true }, [Validators.required, Validators.email]);
+    this.userName = new FormControl( this.person.name, [Validators.required]);
+    this.userSurname = new FormControl(this.person.surname, [Validators.required]);
+    this.userLastname = new FormControl(this.person.lastname, [Validators.required]);
+    this.userEmail = new FormControl(this.person.email, [Validators.required, Validators.email]);
   }
 
   public savePersonData(): void {
@@ -62,10 +61,9 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
     this.person.surname = this.userSurname.value;
     this.person.lastname = this.userLastname.value;
     this.person.email = this.userEmail.value;
-    console.log(this.person);
-    this.personService.Update(this.person.id!, this.person).subscribe(data => {
-      console.log(data);
+    this.personService.Update(this.person.id!, this.person).subscribe({
+      next: (data) => { this.snackBar.open('Данные сохранены', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });},
+      error: (error) => {console.log(error);},
     });
-    this.userName.disabled;
   }
 }

@@ -16,8 +16,7 @@
 }
 
 .request {
-    width: 15vw;
-    /* height: 25vh; */
+    width: 17vw;
     margin: 5px;
 }
 
@@ -27,7 +26,6 @@
 
 .completedRequest {
     width: 15vw;
-    /* height: 25vh; */
     margin: 5px;
     background-color: rgb(166, 223, 166);
 }

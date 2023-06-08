@@ -1,5 +1,5 @@
-<div class="submittedApplication">
-    <div class="activeRequests">
+<div class="submitted-requests">
+    <div class="active-requests">
         <h1>Активные заявки:</h1>
         <mat-divider></mat-divider>
         <div class="requests">
@@ -8,10 +8,12 @@
                 <mat-card-header>
                     <mat-card-title>Заявка № {{item.id}}</mat-card-title>
                     <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item?.dateTimeStart | date : "EEEE, d MMMM H:mm"}} </mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item?.dateTimeStart | date : "EEEE, d MMMM H:mm"}}
+                    </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <p>Кабинет: {{item.place.name}}</p>
+                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
+                            <small>{{item.place.description}}</small></span></p>
                     <p>Описание: {{item.description}}</p>
                 </mat-card-content>
                 <mat-divider></mat-divider>
@@ -22,20 +24,21 @@
             </mat-card>
         </div>
     </div>
-    <div class="completedRequests" >
+    <div class="completed-requests">
         <h1>Завершенные:</h1>
         <mat-divider></mat-divider>
         <div class="button-container">
-            <button mat-fab class="autorenew-button" *ngIf="!completedRequestsLoaded" (click)="refreshCompletedRequests()">
+            <button mat-fab class="autorenew-button" *ngIf="!completedRequestsLoaded"
+                (click)="refreshCompletedRequests()">
                 <mat-icon>autorenew</mat-icon>
             </button>
         </div>
         <div class="requests" *ngIf="completedRequestsLoaded">
-            <mat-card class="completedRequest" *ngFor="let item of completedRequests" (click)="openRequestInfo(item)">
+            <mat-card class="completed-request" *ngFor="let item of completedRequests" (click)="openRequestInfo(item)">
                 <mat-card-header>
                     <mat-card-title>Заявка № {{item.id}}</mat-card-title>
                     <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EEEE, d MMMM H:mm"}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                     <p>Кабинет: {{item.place.name}}</p>

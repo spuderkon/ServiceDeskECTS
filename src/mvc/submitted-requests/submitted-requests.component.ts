@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Request } from '../models/request/request.model';
 import { RequestService } from '../services/http/request/request.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import localeRu from '@angular/common/locales/ru';
 import { Person } from '../models/person/person.model';
 import { PlaceService } from '../services/http/place/place.service';
 import { PersonService } from '../services/http/person/person.service';
@@ -12,17 +11,19 @@ import { AuthService } from '../services/auth/auth.service';
 import { Observable, map, startWith } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { WorkOnRequest } from '../models/workOnRequest/work-on-request.model';
+import { WorkOnRequestService } from '../services/http/workOnRequest/work-on-request.service';
 
 export interface DialogData {
   request: Request;
 }
 
 @Component({
-  selector: 'app-submitted-applications',
-  templateUrl: './submitted-applications.component.html',
-  styleUrls: ['./submitted-applications.component.css']
+  selector: 'app-submitted-requests',
+  templateUrl: './submitted-requests.component.html',
+  styleUrls: ['./submitted-requests.component.css']
 })
-export class SubmittedApplicationsComponent implements OnInit {
+export class SubmittedRequestsComponent implements OnInit {
 
   public activeRequests: Array<Request>;
   public completedRequests: Array<Request>;
@@ -52,16 +53,16 @@ export class SubmittedApplicationsComponent implements OnInit {
   }
 
   public openRequestInfo(request: Request) {
-    const dialogRef = this.dialog.open(RequestInfoDialog, { data: { request } })
+    const dialogRef = this.dialog.open(RequestInfoDialogSR, { data: { request } })
   }
 
   public completeRequest(request: Request) {
-    const dialogRef = this.dialog.open(CompleteRequestDialog);
+    const dialogRef = this.dialog.open(CompleteRequestDialogSR);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result == true) {
         request.isComplete = true;
-        this.requestService.UpdateMy(request).subscribe(
+        this.requestService.Update(request).subscribe(
           {
             next: (data) => {
               this.activeRequests.splice(this.activeRequests.indexOf(request, 0), 1);
@@ -75,20 +76,18 @@ export class SubmittedApplicationsComponent implements OnInit {
   }
 
   public changeRequest(request: Request) {
-    const dialogRef = this.dialog.open(ChangeRequestDialog, { data: { request } });
+    const dialogRef = this.dialog.open(ChangeRequestDialogSR, { data: { request } }); 
   }
 
 }
 
 @Component({
-  selector: 'change-request-dialog',
-  templateUrl: 'changeRequestDialog.html',
+  selector: 'change-request-dialog-s-r',
+  templateUrl: 'changeRequestDialogSR.html',
 })
-export class ChangeRequestDialog implements OnInit {
+export class ChangeRequestDialogSR implements OnInit {
 
   public request: Request;
-
-  public person: Person;
   public persons: Person[]
 
   public places: Place[];
@@ -107,18 +106,18 @@ export class ChangeRequestDialog implements OnInit {
     this.request = data.request;
     this.persons = new Array<Person>;
     this.places = new Array<Place>;
-    this.selectedPlace = new FormControl('', [Validators.required]);
+    this.selectedPlace = new FormControl(this.request.place, [Validators.required]);
     this.desription = new FormControl(this.request.description, [Validators.required]);
-    this.selectedPerson = new FormControl({ value: '', disabled: this.authSerivce.isClient() }, [Validators.required]);
+    this.selectedPerson = new FormControl({ value: this.request.declarant, disabled: this.authSerivce.isClient() }, [Validators.required]);
     this.filteredPersons = new Observable<Person[]>;
     this.filteredPlaces = new Observable<Place[]>;
   }
 
   ngOnInit(): void {
     this.refreshPlaces();
-    this.refreshPerson();
-    this.refreshPersons();
-    this.selectedPlace.setValue(this.request.place)
+    if(!this.authSerivce.isClient()){
+      this.refreshPersons();
+    }
   }
 
   private refreshPlaces(): void {
@@ -128,13 +127,6 @@ export class ChangeRequestDialog implements OnInit {
         startWith(''),
         map(place => (this.filterPlaces(place || ''))),
       );
-    });
-  }
-
-  private refreshPerson(): void {
-    this.personService.GetMy().subscribe(data => {
-      this.person = data;
-      this.selectedPerson.setValue(this.person);
     });
   }
 
@@ -183,43 +175,32 @@ export class ChangeRequestDialog implements OnInit {
     return place.description + ' №' + place.name;
   }
 
-  public sendApplication(): void {
-    if (this.person == this.selectedPerson.value) {
-      this.requestService.AddMy(this.desription.value, this.selectedPlace.value.id)
-        .subscribe({
-          next: (data) => {
-            this.snackBar.open('Заявка отправлена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }).afterDismissed().subscribe(
-              {
-                next: () => { this.router.navigate(['/submittedApplications']) },
-                error: () => { }
-              }
-            )
-          },
-          error: (error) => { this.snackBar.open('Ошибка', 'Далее', { duration: 5000, panelClass: "classicSnackBar" }) },
-        });
-    }
-    else {
-      this.requestService.Add(this.selectedPerson.value.id, this.desription.value, this.selectedPlace.value.id)
-        .subscribe({
-          next: (data) => {
-            this.snackBar.open('Заявка отправлена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }).afterDismissed().subscribe(
-              {
-                next: () => { this.router.navigate(['/submittedApplications']) },
-                error: () => { }
-              }
-            )
-          },
-          error: (error) => { this.snackBar.open('Ошибка', 'Далее', { duration: 5000, panelClass: "classicSnackBar" }) },
-        });
-    }
+  public changeApplication(): void {
+    this.request.placeId = this.selectedPlace.value.id;
+    this.request.place = this.selectedPlace.value;
+    this.request.description = this.desription.value;
+    this.request.declarantId = this.selectedPerson.value.id;
+    this.request.declarant = this.selectedPerson.value;
+
+    this.requestService.Update(this.request).subscribe({
+      next: (data) => {
+        this.snackBar.open('Заявка изменена','Ок', {panelClass: "classicSnackBar"})
+      },
+      error: (error) => {console.log(error);},
+    });
+  }
+
+  public isObject(value: Object): boolean{
+    if(typeof value === 'object') return true;
+    return false;
   }
 }
 
 @Component({
-  selector: 'complete-request-dialog',
-  templateUrl: 'completeRequestDialog.html',
+  selector: 'complete-request-dialog-s-r',
+  templateUrl: 'completeRequestDialogSR.html',
 })
-export class CompleteRequestDialog implements OnInit {
+export class CompleteRequestDialogSR implements OnInit {
 
   constructor() { }
 
@@ -228,15 +209,27 @@ export class CompleteRequestDialog implements OnInit {
 }
 
 @Component({
-  selector: 'request-info-dialog',
-  templateUrl: 'requestInfoDialog.html',
+  selector: 'request-info-dialog-s-r',
+  templateUrl: 'requestInfoDialogSR.html',
 })
-export class RequestInfoDialog implements OnInit {
+export class RequestInfoDialogSR implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  public request: Request;
+  public workOnRequests: WorkOnRequest[]
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private workOnRequestService:WorkOnRequestService) {
+    this.request = data.request;
+    this.workOnRequests = new Array<WorkOnRequest>;
   }
 
   ngOnInit(): void {
+    this.refreshWorkOnRequest();
+  }
 
+  public refreshWorkOnRequest(): void {
+    this.workOnRequestService.GetByRequestAll(this.request.id!).subscribe(data => {
+      this.workOnRequests = data;
+      console.log(this.workOnRequests);
+    })
   }
 }

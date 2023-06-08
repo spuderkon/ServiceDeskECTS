@@ -4,7 +4,7 @@
     alt="Angular Logo"
     src="/assets/img/qwe.png"
   /> -->
-  <button mat-raised-button routerLink="/createApplication" class="createApplicationButton">
+  <button mat-raised-button routerLink="/createRequest" class="create-request-button">
     <mat-icon>add</mat-icon>Оставить заявку
   </button>
   <div class="spacer"></div>
@@ -17,15 +17,15 @@
         <mat-icon>person</mat-icon>
         <span>Личный кабинет</span>
       </button>
-      <button mat-menu-item routerLink="/submittedApplications">
+      <button mat-menu-item routerLink="/submittedRequests">
         <mat-icon>event_available</mat-icon>
         <span>Отправленные заявки</span>
       </button>
-      <button mat-menu-item routerLink="/applications">
+      <button mat-menu-item routerLink="/requests">
         <mat-icon>event_note</mat-icon>
         <span>Заявки</span>
       </button>
-      <button mat-menu-item routerLink="/myApplications">
+      <button mat-menu-item routerLink="/myRequests">
         <mat-icon>event_available</mat-icon>
         <span>Мои заявки</span>
       </button>

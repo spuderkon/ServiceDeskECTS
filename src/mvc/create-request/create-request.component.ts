@@ -14,11 +14,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-create-application',
-  templateUrl: './create-application.component.html',
-  styleUrls: ['./create-application.component.css']
+  selector: 'app-create-request',
+  templateUrl: './create-request.component.html',
+  styleUrls: ['./create-request.component.css']
 })
-export class CreateApplicationComponent implements OnInit {
+export class CreateRequestComponent implements OnInit {
 
   public places: Place[];
   public person: Person;
@@ -28,27 +28,34 @@ export class CreateApplicationComponent implements OnInit {
   public selectedPerson: FormControl;
   public desription: FormControl;
 
-  public personCtrl = new FormControl;
   public filteredPersons: Observable<Person[]>;
+  public filteredPlaces: Observable<Place[]>;
 
   constructor(private placeService: PlaceService, private personService: PersonService,
     public authSerivce: AuthService, private requestService: RequestService,
     private snackBar: MatSnackBar, private router: Router) {
     this.selectedPlace = new FormControl('', [Validators.required]);
     this.desription = new FormControl('', [Validators.required]);
-    this.selectedPerson = new FormControl({ value: '', disabled: this.authSerivce.isClient() }, [Validators.required])
+    this.selectedPerson = new FormControl({ value: '', disabled: this.authSerivce.isClient() }, [Validators.required]);
+    this.filteredPersons = new Observable<Person[]>;
+    this.filteredPlaces = new Observable<Place[]>;
   }
 
   ngOnInit(): void {
     this.refreshPlaces();
     this.refreshPerson();
-    this.refreshPersons();
+    if(!this.authSerivce.isClient()){
+      this.refreshPersons();
+    }
   }
 
   private refreshPlaces(): void {
     this.placeService.GetAll().subscribe(data => {
       this.places = data;
-      console.log(this.places[0]);
+      this.filteredPlaces = this.selectedPlace.valueChanges.pipe(
+        startWith(''),
+        map(place => (this.filterPlaces(place || ''))),
+      );
     });
   }
 
@@ -62,7 +69,6 @@ export class CreateApplicationComponent implements OnInit {
   private refreshPersons(): void {
     this.personService.GetAll().subscribe(data => {
       this.persons = data;
-      console.log(this.persons);
       this.filteredPersons = this.selectedPerson.valueChanges.pipe(
         startWith(''),
         map(person => (this.filterPersons(person || ''))),
@@ -81,9 +87,28 @@ export class CreateApplicationComponent implements OnInit {
     return this.persons.filter(person => (person.surname! + ' ' + person.name! + ' ' + person.lastname!).toLowerCase().includes(filterValue));
   }
 
-  public displayFn(person: Person): string {
+  private filterPlaces(value: any): Place[] {
+    let filterValue = '';
+    try {
+      filterValue = value.toLowerCase();
+    }
+    catch {
+      if(value.description == null) filterValue = ('Кабинет №' + value.name).toLowerCase();
+      else filterValue = (value.description + ' №' + value.name).toLowerCase();
+    }
+    if(value.description == null) return this.places.filter(place => ('Кабинет №' + place.name!).toLowerCase().includes(filterValue));
+    return this.places.filter(place => (place.name!).toLowerCase().includes(filterValue));
+  }
+
+  public displayPersonFn(person: Person): string {
     if (person.name == undefined) return '';
     return person.surname + ' ' + person.name + ' ' + person.lastname;
+  }
+
+  public displayPlaceFn(place: Place): string {
+    if (place.name == undefined) return '';
+    else if (place.description == null) return 'Кабинет ' + '№' + place.name;
+    return place.description + ' №' + place.name;
   }
 
   public sendApplication(): void {
@@ -115,5 +140,10 @@ export class CreateApplicationComponent implements OnInit {
           error: (error) => { this.snackBar.open('Ошибка', 'Далее', { duration: 5000, panelClass: "classicSnackBar" }) },
         });
     }
+  }
+  
+  public isObject(value: Object): boolean{
+    if(typeof value === 'object') return true;
+    return false;
   }
 }

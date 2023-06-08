@@ -1,0 +1,93 @@
+<style>
+    .change-request-dialog {
+        display: block;
+    }
+
+    textarea {
+        resize: none !important;
+        height: 10vh;
+    }
+
+    mat-card {
+        background-color: #dfe9f3;
+        width: 30vw;
+        height: 35vh;
+    }
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    mat-card-actions {
+        display: flex;
+        justify-content: center;
+    }
+
+    mat-progress-bar {
+        bottom: 0;
+        position: absolute;
+    }
+
+    mat-card-content {
+        margin: 2vh 0;
+    }
+
+    .autocomplete-image {
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+</style>
+<div class="change-request-dialog">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Изменение заявки</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-form-field>
+                <mat-label>Кабинет</mat-label>
+                <input matInput [matAutocomplete]="autoPlace" [formControl]="selectedPlace">
+                <mat-autocomplete #autoPlace="matAutocomplete" [displayWith]="displayPlaceFn">
+                    <mat-option *ngFor="let item of filteredPlaces | async" [value]="item">
+                        <span *ngIf="item.description == null">Кабинет №{{item.name}}</span>
+                        <span *ngIf="item.description != null">{{item.description}} №{{item.name}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Описание</mat-label>
+                <textarea matInput [formControl]="desription" placeholder="" style="height: 10vh;"
+                    maxlength="255"></textarea>
+                <mat-hint align="end">{{desription.value.length}} / 255</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Заявитель</mat-label>
+                <input matInput [matAutocomplete]="autoPerson" [formControl]="selectedPerson">
+                <mat-autocomplete #autoPerson="matAutocomplete" [displayWith]="displayPersonFn">
+                    <mat-option *ngFor="let item of filteredPersons | async" [value]="item">
+                        <img *ngIf="item.postId == 1" class="autocomplete-image" src="/assets/icons/teacher.png"
+                            height="25">
+                        <img *ngIf="item.postId == 2 || item.postId == 18" class="autocomplete-image"
+                            src="/assets/icons/systemAdministrator.png" height="25">
+                        <img *ngIf="item.postId != 2 && item.postId != 18 && item.postId != 1"
+                            class="autocomplete-image" src="/assets/icons/employee.png" height="25">
+                        <span>{{item.surname}} {{item.name}} {{item.lastname}}</span> |
+                        <small>{{item.post?.name}}</small>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-actions>
+        </mat-card-actions>
+        <mat-card-footer>
+            <mat-progress-bar mode="query" *ngIf="false"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Отмена</button>
+        <button mat-button mat-dialog-close
+            [disabled]="selectedPlace.hasError('required') || desription.hasError('required') || selectedPerson.hasError('required') || !isObject(this.selectedPlace.value) || !isObject(this.selectedPerson.value)"
+            (click)="changeRequest()" cdkFocusInitial>Изменить</button>
+    </div>
+</div>

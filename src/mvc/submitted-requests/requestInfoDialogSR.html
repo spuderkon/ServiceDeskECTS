@@ -1,0 +1,22 @@
+<style>
+
+</style>
+<mat-dialog-content class="request-info-dialog">
+    <div *ngIf="workOnRequests.length == 0">
+        <h2>Пока что никакие работы не проводились<mat-icon style="font-size: 2vw;">sentiment_satisfied</mat-icon></h2>
+    </div>
+    <h1 mat-dialog-title *ngIf="workOnRequests.length != 0">Работы по заявке:</h1>
+    <div class="work-on-request" *ngFor="let item of workOnRequests">
+        <h3>{{item.service?.name}}</h3>
+        <span><strong>Исполнитель:</strong> {{item.implementer?.name}}</span><span style="margin-left: 10px;"><strong>Дата и время: </strong>{{item.dateTime | date : "EEEE, d MMMM H:mm"}}</span>
+        <p>Проведенные работы: {{item.comment}}</p>
+        <mat-divider></mat-divider>
+    </div>
+        <!-- <mat-list class="workOnRequest">
+            <mat-list-item *ngFor="let item of workOnRequests">
+                <p>{{item.implementer?.name}}</p>
+                <p>{{item.comment}}</p>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list> -->
+</mat-dialog-content>

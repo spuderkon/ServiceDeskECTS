@@ -31,17 +31,18 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { AuthorizationComponent } from '../authorization/authorization.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CreateApplicationComponent } from '../create-application/create-application.component';
+import { CreateRequestComponent } from '../create-request/create-request.component';
 import { PersonalAccountComponent } from '../personal-account/personal-account.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { ApplicationsComponent } from '../applications/applications.component'
-import { ApplicationComponent } from '../application/application.component';
-import { ChangeRequestDialog, CompleteRequestDialog, RequestInfoDialog, SubmittedApplicationsComponent } from '../submitted-applications/submitted-applications.component';
+import { RequestsComponent, ChangeRequestDialogR, CompleteRequestDialogR, RequestInfoDialogR } from '../requests/requests.component'
+import { RequestComponent } from '../request/request.component';
+import { ChangeRequestDialogSR, CompleteRequestDialogSR, RequestInfoDialogSR, SubmittedRequestsComponent } from '../submitted-requests/submitted-requests.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
-import { MyApplicationsComponent } from '../my-applications/my-applications.component';
+import { MyRequestsComponent } from '../my-requests/my-requests.component';
 import { CrudPersonsComponent, CreateUserDialog } from '../crud-persons/crud-persons.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -49,15 +50,18 @@ registerLocaleData(localeRu, 'ru');
   declarations: [
     AppComponent,
     AuthorizationComponent,
-    CreateApplicationComponent,
+    CreateRequestComponent,
     PersonalAccountComponent,
-    ApplicationsComponent,
-    ApplicationComponent,
-    SubmittedApplicationsComponent,
-    ChangeRequestDialog,
-    RequestInfoDialog,
-    CompleteRequestDialog,
-    MyApplicationsComponent,
+    RequestsComponent,
+    ChangeRequestDialogR,
+    RequestInfoDialogR,
+    CompleteRequestDialogR,
+    RequestComponent,
+    SubmittedRequestsComponent,
+    ChangeRequestDialogSR,
+    RequestInfoDialogSR,
+    CompleteRequestDialogSR,
+    MyRequestsComponent,
     CrudPersonsComponent,
     CreateUserDialog,
   ],
@@ -92,6 +96,7 @@ registerLocaleData(localeRu, 'ru');
     MatMenuModule,
     MatExpansionModule,
     MatSnackBarModule,
+    DragDropModule,
   ],
   providers: [[AuthorizationComponent, AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]

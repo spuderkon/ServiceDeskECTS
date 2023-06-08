@@ -20,10 +20,14 @@ export class PersonService {
   }
 
   public GetAll(): Observable<Person[]>{
-    return this.http.get<Person[]>(this.apiUrl + '/GetAll', {headers: this.headers})
+    return this.http.get<Person[]>(this.apiUrl + '/GetAll', {headers: this.headers});
   }
 
-  public Update(id: number, person: Person): Observable<Person>{
-    return this.http.put<Person>(this.apiUrl + '/Update/' + id,person, {headers: this.headers});
+  public GetAllLaborants(): Observable<Person[]>{
+    return this.http.get<Person[]>(this.apiUrl + '/GetAllLaborants', {headers: this.headers});
+  }
+
+  public Update(personId: number, person: Person): Observable<Person>{
+    return this.http.put<Person>(this.apiUrl + '/Update/' + personId,person, {headers: this.headers});
   }
 }

@@ -1,0 +1,53 @@
+<div class="submittedApplication">
+    <div class="activeRequests">
+        <h1>Активные заявки:</h1>
+        <mat-divider></mat-divider>
+        <div class="requests">
+            <mat-card class="request" *ngFor="let item of activeRequests"
+                [style.background-color]="item.requestStatusId == 1 ? 'rgb(240, 220, 164)' : item.requestStatusId == 3 ? 'rgb(154, 194, 240)' : 'white'">
+                <mat-card-header>
+                    <mat-card-title>Заявка № {{item.id}}</mat-card-title>
+                    <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item?.dateTimeStart | date : "EEEE, d MMMM H:mm"}}
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
+                            <small>{{item.place.description}}</small></span></p>
+                    <p>Описание: {{item.description}}</p>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+                <mat-card-actions align="end">
+                    <button mat-button>Изменить</button>
+                    <button mat-button>Завершить</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+    <div class="completedRequests">
+        <h1>Завершенные:</h1>
+        <mat-divider></mat-divider>
+        <div class="button-container">
+            <button mat-fab class="autorenew-button" *ngIf="!completedRequestsLoaded"
+                (click)="refreshCompletedRequests()">
+                <mat-icon>autorenew</mat-icon>
+            </button>
+        </div>
+        <div class="requests" *ngIf="completedRequestsLoaded">
+            <mat-card class="completedRequest" *ngFor="let item of completedRequests" >
+                <mat-card-header>
+                    <mat-card-title>Заявка № {{item.id}}</mat-card-title>
+                    <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EEEE, d MMMM H:mm"}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Кабинет: {{item.place.name}}</p>
+                    <p>Описание: {{item.description}}</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <footer style="height: 25px;">
+
+    </footer>
+</div>

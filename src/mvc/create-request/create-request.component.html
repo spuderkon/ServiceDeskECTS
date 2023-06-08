@@ -1,17 +1,18 @@
-<div class="createApplication">
+<div class="create-request">
     <mat-card>
         <mat-card-header>
             <mat-card-title>Создание заявки</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-form-field appearance="fill">
+            <mat-form-field>
                 <mat-label>Кабинет</mat-label>
-                <mat-select [formControl]="selectedPlace">
-                    <mat-option [value]="item" *ngFor="let item of places">
-                        <span *ngIf="item.description == null">Кабинет - {{item.name}}</span>
-                        <span *ngIf="item.description != null">{{item.description}} - {{item.name}}</span>
+                <input matInput [matAutocomplete]="autoPlace" [formControl]="selectedPlace" placeholder="Поиск по номеру кабинет">
+                <mat-autocomplete #autoPlace="matAutocomplete" [displayWith]="displayPlaceFn">
+                    <mat-option *ngFor="let item of filteredPlaces | async" [value]="item">
+                        <span *ngIf="item.description == null">Кабинет №{{item.name}}</span>
+                        <span *ngIf="item.description != null">{{item.description}} №{{item.name}}</span>
                     </mat-option>
-                </mat-select>
+                </mat-autocomplete>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Описание</mat-label>
@@ -22,9 +23,8 @@
                 <mat-label>Заявитель</mat-label>
                 <input matInput
                        [matAutocomplete]="auto"
-                       [formControl]="selectedPerson"
-                       [disabled]="authSerivce.isClient()">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                       [formControl]="selectedPerson">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayPersonFn">
                   <mat-option *ngFor="let person of filteredPersons | async" [value]="person">
                     <img *ngIf="person.postId == 1" class="autocomplete-image" src="/assets/icons/teacher.png" height="25">
                     <img *ngIf="person.postId == 2 || person.postId == 18" class="autocomplete-image" src="/assets/icons/systemAdministrator.png" height="25">
@@ -38,7 +38,7 @@
             <mat-divider></mat-divider>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button [disabled]="selectedPlace.hasError('required') || desription.hasError('required') || selectedPerson.hasError('required')" (click)="sendApplication()">Отправить</button> 
+            <button mat-raised-button [disabled]="selectedPlace.hasError('required') || desription.hasError('required') || selectedPerson.hasError('required') || !isObject(this.selectedPlace.value) || !isObject(this.selectedPerson.value)" (click)="sendApplication()">Отправить</button> 
         </mat-card-actions>
         <mat-card-footer>
             <mat-progress-bar mode="query" *ngIf="false"></mat-progress-bar>

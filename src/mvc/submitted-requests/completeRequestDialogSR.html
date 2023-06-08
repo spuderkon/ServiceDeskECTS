@@ -1,0 +1,11 @@
+<style>
+    
+</style>
+<h1 mat-dialog-title>Завершить задачу</h1>
+<div mat-dialog-content>
+  Вы действительно хотите досрочно завершить задачу?
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false" >Нет</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Да</button>
+</div>

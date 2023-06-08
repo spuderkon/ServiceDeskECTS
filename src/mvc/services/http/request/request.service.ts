@@ -20,12 +20,28 @@ export class RequestService {
     return this.http.get<Request[]>(this.apiUrl + '/GetMyAll', {headers: this.headers});
   }
 
+  public GetActiveAll(): Observable<Request[]>{
+    return this.http.get<Request[]>(this.apiUrl + '/GetActiveAll', {headers: this.headers});
+  }
+
   public GetMyActiveAll(): Observable<Request[]>{
     return this.http.get<Request[]>(this.apiUrl + '/GetMyActiveAll', {headers: this.headers});
   }
 
   public GetMyCompletedAll(): Observable<Request[]>{
     return this.http.get<Request[]>(this.apiUrl + '/GetMyCompletedAll', {headers: this.headers});
+  }
+
+  public GetByImpActiveAll(personId: number): Observable<Request[]>{
+    return this.http.get<Request[]>(this.apiUrl + '/GetByImpActiveAll/' + personId, {headers: this.headers});
+  }
+
+  public GetMyByImpActiveAll(): Observable<Request[]>{
+    return this.http.get<Request[]>(this.apiUrl + '/GetMyByImpActiveAll', {headers: this.headers});
+  }
+
+  public GetMyByImpCompletedAll(): Observable<Request[]>{
+    return this.http.get<Request[]>(this.apiUrl + '/GetMyByImpCompletedAll', {headers: this.headers});
   }
 
   public Add(declarantId: number,description: string, placeId: number): Observable<Request>{
@@ -47,7 +63,7 @@ export class RequestService {
     return this.http.post<Request>(this.apiUrl + '/AddMy', body, {headers: this.headers})
   }
 
-  public UpdateMy(request: Request): Observable<Request>{
+  public Update(request: Request): Observable<Request>{
     return this.http.put<Request>(this.apiUrl + '/UpdateMy/' + request.id, request, {headers: this.headers});
   }
 }
