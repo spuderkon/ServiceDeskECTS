@@ -118,7 +118,7 @@ export class CreateRequestComponent implements OnInit {
           next: (data) => {
             this.snackBar.open('Заявка отправлена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }).afterDismissed().subscribe(
               {
-                next: () => { this.router.navigate(['/submittedApplications']) },
+                next: () => { this.router.navigate(['/submittedRequests']) },
                 error: () => { }
               }
             )

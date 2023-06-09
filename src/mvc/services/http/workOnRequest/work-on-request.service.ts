@@ -17,4 +17,11 @@ export class WorkOnRequestService {
   public GetByRequestAll(requestId: number): Observable<WorkOnRequest[]>{
     return this.http.get<WorkOnRequest[]>(this.apiUrl + '/GetByRequestAll/' + requestId, {headers: this.headers});
   }
+
+  public AddMyAccepted(requestId: number): Observable<WorkOnRequest>{
+    const body = { 
+      'reqId': requestId
+    }
+    return this.http.post<WorkOnRequest>(this.apiUrl + '/AddMyAccepted/' + requestId, body, {headers: this.headers});
+  }
 }

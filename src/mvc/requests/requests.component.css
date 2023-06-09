@@ -5,19 +5,26 @@
     width: 87%;
 }
 
-.button-container{
+.button-container {
     display: flex;
-    justify-content: center ;
+    justify-content: center;
 }
 
 .requests-container {
     display: flex;
     flex-wrap: wrap;
+    min-height: 5vh;
 }
 
 .request {
-    width: 18vw;
+    width: 17vw;
     margin: 5px;
+}
+
+.description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .request:hover {

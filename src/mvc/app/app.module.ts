@@ -32,7 +32,7 @@ import localeRu from '@angular/common/locales/ru';
 import { AuthorizationComponent } from '../authorization/authorization.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CreateRequestComponent } from '../create-request/create-request.component';
-import { PersonalAccountComponent } from '../personal-account/personal-account.component';
+import { ChangePassword, PersonalAccountComponent } from '../personal-account/personal-account.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { RequestsComponent, ChangeRequestDialogR, CompleteRequestDialogR, RequestInfoDialogR } from '../requests/requests.component'
 import { RequestComponent } from '../request/request.component';
@@ -52,6 +52,7 @@ registerLocaleData(localeRu, 'ru');
     AuthorizationComponent,
     CreateRequestComponent,
     PersonalAccountComponent,
+    ChangePassword,
     RequestsComponent,
     ChangeRequestDialogR,
     RequestInfoDialogR,
@@ -98,7 +99,7 @@ registerLocaleData(localeRu, 'ru');
     MatSnackBarModule,
     DragDropModule,
   ],
-  providers: [[AuthorizationComponent, AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [[ AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

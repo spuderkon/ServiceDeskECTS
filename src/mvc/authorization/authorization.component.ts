@@ -17,27 +17,24 @@ export class AuthorizationComponent implements OnInit {
   dataIsLoading: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
-    this.userLogin = new FormControl('GarievDenis', [Validators.required, Validators.pattern('^[a-zA-Z]+$')])
+    this.userLogin = new FormControl('PerOleg', [Validators.required, Validators.pattern('^[a-zA-Z]+$')])
     this.userPassword = new FormControl('123', [Validators.required])
   }
 
   ngOnInit(): void {
-    console.log(localStorage.getItem('password'));
+    
   }
 
   login(): void {
     this.dataIsLoading = true
-    this.authService.login(this.userLogin.value, this.userPassword.value)
+    this.authService.authorize(this.userLogin.value, this.userPassword.value)
       .subscribe({
         next: () => (this.router.navigate(['/'])),
         error: (error) => (
           console.log(error),
-          this.snackBar.open('Данные введены неверно', 'Ок', {panelClass: ['error-snack-bar']}), this.dataIsLoading = false),
+          this.snackBar.open('Данные введены неверно', 'Ок', {duration: 5000,panelClass: ['classicSnackBar']}), this.dataIsLoading = false),
       });
   }
-
-  // data => console.log(data),
-  //       err => {  this.snackBar.open(err, 'qwe', {panelClass: ['error-snack-bar']}) },
 
   clearValue(value: FormControl): void {
     value.setValue('');

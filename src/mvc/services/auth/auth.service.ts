@@ -13,19 +13,23 @@ import * as crypto from 'crypto-js';
 })
 export class AuthService {
 
-  private apiUrl: string = 'https://localhost:5001/';
+  private apiUrl: string = 'https://localhost:5001/Auth';
   private httpParams = new HttpParams();
+  private headers = new HttpHeaders().set('Authorization', 'Bearer '+ localStorage.getItem('token'));
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  public login(userName: string, password: string) {
+  public authorize(userName: string, password: string) {
     console.log('Loggining');
-    console.log(userName,password)
     this.httpParams = new HttpParams().set('username', userName).set('password', password);
-    console.log(this.httpParams)
-    return this.http.post(this.apiUrl + 'Auth/Authorize', this.httpParams).pipe(
+    return this.http.post(this.apiUrl + '/Authorize', this.httpParams).pipe(
       tap((token: any) => (this.setSession(token.token, userName, password)),
     ));
+  }
+
+  public setNewPassword(userName: string, password: string){
+    this.httpParams = new HttpParams().set('username', userName).set('password', password);
+    return this.http.post(this.apiUrl + '/SetNewPassword', this.httpParams, {headers: this.headers})
   }
 
   private setSession(token: string, userName: string, password: string): void {
@@ -54,7 +58,7 @@ export class AuthService {
     let password: string = bytes.toString(crypto.enc.Utf8);
     this.httpParams = new HttpParams().set('username', userName).set('password', password);
     console.log(this.httpParams);
-    this.http.post(this.apiUrl + 'Auth/Authorize', this.httpParams)
+    this.http.post(this.apiUrl + '/Authorize', this.httpParams)
     .subscribe((token: any) => (console.log(token.token),this.setSession(token.token,userName,password)));
   }
 

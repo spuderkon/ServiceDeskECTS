@@ -50,7 +50,6 @@ export class RequestService {
                     "description": description,
                     "placeId" : placeId,
                   };
-    this.params = new HttpParams().set('description', description);
     return this.http.post<Request>(this.apiUrl + '/Add', body, {headers: this.headers})
   }
 
@@ -63,7 +62,19 @@ export class RequestService {
     return this.http.post<Request>(this.apiUrl + '/AddMy', body, {headers: this.headers})
   }
 
-  public Update(request: Request): Observable<Request>{
+  public UpdateMy(request: Request): Observable<Request>{
     return this.http.put<Request>(this.apiUrl + '/UpdateMy/' + request.id, request, {headers: this.headers});
+  }
+
+  public Update(request: Request): Observable<Request>{
+    const body = {
+      'id': request.id,
+      'description': request.description,
+      'placeId': request.placeId,
+      'isComplete': request.isComplete,
+      'declarantId': request.declarantId,
+    }
+    console.log(body);
+    return this.http.put<Request>(this.apiUrl + '/Update/' + request.id, body, {headers: this.headers});
   }
 }

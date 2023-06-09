@@ -1,15 +1,25 @@
 <style>
-
+.description{
+    inline-size: 550px;
+    overflow-wrap: break-word;
+}
 </style>
 <mat-dialog-content class="request-info-dialog">
+    <div class="request-info">
+        <p>Кабинет: {{request.place.name}}</p>
+        <p class="description">Описание: {{request.description}}</p>
+    </div>
     <div *ngIf="workOnRequests.length == 0">
         <h2>Пока что никакие работы не проводились<mat-icon style="font-size: 2vw;">sentiment_satisfied</mat-icon></h2>
     </div>
     <h1 mat-dialog-title *ngIf="workOnRequests.length != 0">Работы по заявке:</h1>
     <div class="work-on-request" *ngFor="let item of workOnRequests">
         <h3>{{item.service?.name}}</h3>
-        <span><strong>Исполнитель:</strong> {{item.implementer?.name}}</span><span style="margin-left: 10px;"><strong>Дата и время: </strong>{{item.dateTime | date : "EEEE, d MMMM H:mm"}}</span>
-        <p>Проведенные работы: {{item.comment}}</p>
+        <span><strong>Исполнитель: </strong>{{item.implementer?.surname}} {{item.implementer?.name}}</span><span style="margin-left: 10px;"><strong>Дата и время: </strong>{{item.dateTime | date : "EEEE, d MMMM H:mm"}}</span>
+        <p>Проведенные работы:</p>
+        <div style="text-indent: 1vw;">
+            <p>{{item.comment}}</p>
+        </div>
         <mat-divider></mat-divider>
     </div>
         <!-- <mat-list class="workOnRequest">

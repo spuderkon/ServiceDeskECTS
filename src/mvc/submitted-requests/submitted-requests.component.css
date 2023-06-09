@@ -20,6 +20,12 @@
     margin: 5px;
 }
 
+.description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .request:hover {
     background-color: aliceblue !important;
 }

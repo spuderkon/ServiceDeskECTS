@@ -32,33 +32,28 @@ export interface LaborantsRequests {
 export class RequestsComponent implements OnInit {
 
   public activeRequests: Array<Request>;
-  public completedRequests: Array<Request>;
   public completedRequestsLoaded: boolean;
 
   public laborantsRequests: LaborantsRequests[];
 
-  constructor(private requestService: RequestService, public dialog: MatDialog, private personService: PersonService) {
+  constructor(private requestService: RequestService, public dialog: MatDialog, private snackBar: MatSnackBar, 
+              private personService: PersonService, private workOnRequestService: WorkOnRequestService,
+              public authService: AuthService) {
     this.activeRequests = new Array<Request>;
-    this.completedRequests = new Array<Request>;
     this.laborantsRequests = new Array<LaborantsRequests>;
     this.completedRequestsLoaded = false;
   }
 
   ngOnInit(): void {
     this.refreshActiveRequests();
-    this.refreshLaborantsRequests();
+    if(this.authService.isAdmin()){
+      this.refreshLaborantsRequests();
+    }
   }
 
   private refreshActiveRequests(): void {
     this.requestService.GetActiveAll().subscribe(data => {
       this.activeRequests = data;
-    });
-  }
-
-  public refreshCompletedRequests(): void {
-    this.requestService.GetMyCompletedAll().subscribe(data => {
-      this.completedRequests = data;
-      this.completedRequestsLoaded = true;
     });
   }
 
@@ -69,14 +64,21 @@ export class RequestsComponent implements OnInit {
           this.laborantsRequests.push({ laborant: item, activeRequests: data });
         })
       });
-
-
     })
   }
 
   public openRequestInfo(request: Request) {
-    console.log(this.laborantsRequests);
-    // const dialogRef = this.dialog.open(RequestInfoDialogR, { data: { request } })
+    const dialogRef = this.dialog.open(RequestInfoDialogR, { data: { request } })
+  }
+
+  public acceptRequest(request: Request) {
+    this.workOnRequestService.AddMyAccepted(request.id!).subscribe({
+      next: (result) => {
+        this.activeRequests.splice(this.activeRequests.indexOf(request,0),1);
+        this.snackBar.open('Заявка принята', 'Ок', {panelClass: 'classicSnackBar'});
+      },
+      error: (error) => {console.log(error.error);}
+    });
   }
 
   public completeRequest(request: Request) {
@@ -89,9 +91,9 @@ export class RequestsComponent implements OnInit {
           {
             next: (data) => {
               this.activeRequests.splice(this.activeRequests.indexOf(request, 0), 1);
-              this.completedRequests.push(request);
+              this.snackBar.open('Заявка завершена', 'Ок', { duration: 5000, panelClass: ['classicSnackBar'] })
             },
-            error: (error) => { console.log(error) },
+            error: (error) => { console.log(error.error) },
           }
         )
       }
@@ -105,7 +107,7 @@ export class RequestsComponent implements OnInit {
 
 @Component({
   selector: 'change-request-dialog-r',
-  templateUrl: 'changeRequestDialogR.html',
+  templateUrl: 'change-request-dialog-r.html',
 })
 export class ChangeRequestDialogR implements OnInit {
 
@@ -203,7 +205,7 @@ export class ChangeRequestDialogR implements OnInit {
     this.request.declarantId = this.selectedPerson.value.id;
     this.request.declarant = this.selectedPerson.value;
 
-    this.requestService.Update(this.request).subscribe({
+    this.requestService.UpdateMy(this.request).subscribe({
       next: (data) => {
         this.snackBar.open('Заявка изменена', 'Ок', { panelClass: "classicSnackBar" })
       },
@@ -219,7 +221,7 @@ export class ChangeRequestDialogR implements OnInit {
 
 @Component({
   selector: 'complete-request-dialog-r',
-  templateUrl: 'completeRequestDialogR.html',
+  templateUrl: 'complete-request-dialog-r.html',
 })
 export class CompleteRequestDialogR implements OnInit {
 
@@ -231,7 +233,7 @@ export class CompleteRequestDialogR implements OnInit {
 
 @Component({
   selector: 'request-info-dialog-r',
-  templateUrl: 'requestInfoDialogR.html',
+  templateUrl: 'request-info-dialog-r.html',
 })
 export class RequestInfoDialogR implements OnInit {
 

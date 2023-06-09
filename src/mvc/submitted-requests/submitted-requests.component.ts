@@ -62,7 +62,7 @@ export class SubmittedRequestsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result == true) {
         request.isComplete = true;
-        this.requestService.Update(request).subscribe(
+        this.requestService.UpdateMy(request).subscribe(
           {
             next: (data) => {
               this.activeRequests.splice(this.activeRequests.indexOf(request, 0), 1);
@@ -83,7 +83,7 @@ export class SubmittedRequestsComponent implements OnInit {
 
 @Component({
   selector: 'change-request-dialog-s-r',
-  templateUrl: 'changeRequestDialogSR.html',
+  templateUrl: 'change-request-dialog-s-r.html',
 })
 export class ChangeRequestDialogSR implements OnInit {
 
@@ -118,6 +118,7 @@ export class ChangeRequestDialogSR implements OnInit {
     if(!this.authSerivce.isClient()){
       this.refreshPersons();
     }
+   
   }
 
   private refreshPlaces(): void {
@@ -175,16 +176,16 @@ export class ChangeRequestDialogSR implements OnInit {
     return place.description + ' №' + place.name;
   }
 
-  public changeApplication(): void {
+  public changeRequest(): void {
     this.request.placeId = this.selectedPlace.value.id;
     this.request.place = this.selectedPlace.value;
     this.request.description = this.desription.value;
     this.request.declarantId = this.selectedPerson.value.id;
     this.request.declarant = this.selectedPerson.value;
 
-    this.requestService.Update(this.request).subscribe({
+    this.requestService.UpdateMy(this.request).subscribe({
       next: (data) => {
-        this.snackBar.open('Заявка изменена','Ок', {panelClass: "classicSnackBar"})
+        this.snackBar.open('Заявка изменена','Ок', {duration: 5000,panelClass: "classicSnackBar"})
       },
       error: (error) => {console.log(error);},
     });
@@ -198,7 +199,7 @@ export class ChangeRequestDialogSR implements OnInit {
 
 @Component({
   selector: 'complete-request-dialog-s-r',
-  templateUrl: 'completeRequestDialogSR.html',
+  templateUrl: 'complete-request-dialog-s-r.html',
 })
 export class CompleteRequestDialogSR implements OnInit {
 
@@ -210,7 +211,7 @@ export class CompleteRequestDialogSR implements OnInit {
 
 @Component({
   selector: 'request-info-dialog-s-r',
-  templateUrl: 'requestInfoDialogSR.html',
+  templateUrl: 'request-info-dialog-s-r.html',
 })
 export class RequestInfoDialogSR implements OnInit {
 

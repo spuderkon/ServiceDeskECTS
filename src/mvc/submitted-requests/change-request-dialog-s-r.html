@@ -88,6 +88,6 @@
         <button mat-button mat-dialog-close>Отмена</button>
         <button mat-button mat-dialog-close
             [disabled]="selectedPlace.hasError('required') || desription.hasError('required') || selectedPerson.hasError('required') || !isObject(this.selectedPlace.value) || !isObject(this.selectedPerson.value)"
-            (click)="changeApplication()" cdkFocusInitial>Изменить</button>
+            (click)="changeRequest()" cdkFocusInitial>Изменить</button>
     </div>
 </div>

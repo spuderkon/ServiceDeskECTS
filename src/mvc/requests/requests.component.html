@@ -3,23 +3,23 @@
         <h1>Непринятые заявки:</h1>
         <mat-divider></mat-divider>
         <div class="requests-container">
-            <mat-card class="request" *ngFor="let item of activeRequests" (click)="openRequestInfo(item)"
+            <mat-card class="request" *ngFor="let item of activeRequests"
                 [style.background-color]="item.requestStatusId == 1 ? 'rgb(240, 220, 164)' : item.requestStatusId == 3 ? 'rgb(154, 194, 240)' : 'white'">
-                <mat-card-header>
+                <mat-card-header (click)="openRequestInfo(item)">
                     <mat-card-title>Заявка № {{item.id}}</mat-card-title>
                     <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EEEE, d MMMM H:mm"}}</mat-card-subtitle>
-                    <mat-card-subtitle>Заявитель: {{item.declarant?.surname}} {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
+                    <mat-card-subtitle>Заявитель: {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
                 </mat-card-header>
-                <mat-card-content>
+                <mat-card-content (click)="openRequestInfo(item)">
                     <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
                             <small>{{item.place.description}}</small></span></p>
-                    <p>Описание: {{item.description}}</p>
+                    <p class="description">Описание: {{item.description}}</p>
                 </mat-card-content>
                 <mat-divider></mat-divider>
                 <mat-card-actions align="end">
-                    <button mat-button (click)="changeRequest(item)">Изменить</button>
-                    <button mat-button (click)="completeRequest(item)">Завершить</button>
+                    <button mat-button (click)="acceptRequest(item)">Принять</button>
+                    <button mat-button (click)="completeRequest(item)" *ngIf="authService.isAdmin()">Завершить</button>
                 </mat-card-actions>
             </mat-card>
         </div>
@@ -28,20 +28,20 @@
         <div *ngFor="let item of laborantsRequests">
             <h1>{{item.laborant.name}}</h1>
             <mat-divider></mat-divider>
+            <h2 *ngIf="item.activeRequests.length == 0" style="text-align: center;">Заявок нету</h2>
             <div class="requests-container">
-                <h2 *ngIf="item.activeRequests.length == 0" style="text-align: center;">Заявок нету</h2>
                 <mat-card class="request" *ngFor="let item of item.activeRequests" (click)="openRequestInfo(item)"
                 [style.background-color]="item.requestStatusId == 1 ? 'rgb(240, 220, 164)' : item.requestStatusId == 3 ? 'rgb(154, 194, 240)' : 'white'">
                 <mat-card-header>
                     <mat-card-title>Заявка № {{item.id}}</mat-card-title>
                     <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EEEE, d MMMM H:mm"}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
                     <mat-card-subtitle>Заявитель: {{item.declarant?.surname}} {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                     <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
                         <small>{{item.place.description}}</small></span></p>
-                        <p>Описание: {{item.description}}</p>
+                        <p class="description">Описание: {{item.description}}</p>
                     </mat-card-content>
                     <mat-divider></mat-divider>
                     <mat-card-actions align="end">

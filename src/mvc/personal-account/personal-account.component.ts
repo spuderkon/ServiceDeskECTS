@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { PersonService } from '../services/http/person/person.service';
 import { Person } from '../models/person/person.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-personal-account',
@@ -12,17 +13,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PersonalAccountComponent implements OnInit, OnChanges {
 
-  userName: FormControl;
-  userSurname: FormControl;
-  userLastname: FormControl;
-  userEmail: FormControl;
-  person: Person;
+  public userName: FormControl;
+  public userSurname: FormControl;
+  public userLastname: FormControl;
+  public userEmail: FormControl;
+  public person: Person;
 
-  constructor(public authService: AuthService, private personService: PersonService, private snackBar: MatSnackBar) {
-    this.userName = new FormControl('', [Validators.required]);
-    this.userSurname = new FormControl('', [Validators.required]);
-    this.userLastname = new FormControl('', [Validators.required]);
-    this.userEmail = new FormControl('', [Validators.required]);
+  constructor(public authService: AuthService, private personService: PersonService, private snackBar: MatSnackBar, private dialog: MatDialog) {
+    this.userName = new FormControl({value: '', disabled: this.authService.isClient()}, [Validators.required]);
+    this.userSurname = new FormControl({value: '', disabled: this.authService.isClient()}, [Validators.required]);
+    this.userLastname = new FormControl({value: '', disabled: this.authService.isClient()}, [Validators.required]);
+    this.userEmail = new FormControl({value: '', disabled: this.authService.isClient()}, [Validators.required]);
   }
 
 
@@ -38,22 +39,31 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
   public refreshPerson(): void {
     this.personService.GetMy().subscribe(data => {
       this.person = new Person(data);
-      this.refreshFormControlsValue();
+      this.userName.setValue(this.person.name);
+      this.userSurname.setValue(this.person.surname);
+      this.userLastname.setValue(this.person.lastname);
+      this.userEmail.setValue(this.person.email);
     });
   }
 
   //Изменение доступности FormControl
-  public refreshAvailability(value: FormControl): void{
-    if(value.disabled) value.enable();
+  public refreshAvailability(value: FormControl): void {
+    if (value.disabled) value.enable();
     else value.disable();
   }
+  
+  //Вызов окна изменения пароля
+  public changePassword(): void{
+    const dialogRef = this.dialog.open(ChangePassword)
 
-  //Обновление значений FormControls
-  public refreshFormControlsValue(): void{
-    this.userName = new FormControl( this.person.name, [Validators.required]);
-    this.userSurname = new FormControl(this.person.surname, [Validators.required]);
-    this.userLastname = new FormControl(this.person.lastname, [Validators.required]);
-    this.userEmail = new FormControl(this.person.email, [Validators.required, Validators.email]);
+    dialogRef.afterClosed().subscribe(data => {
+      if(typeof data == 'string'){
+        this.authService.setNewPassword(this.person.userName!, data).subscribe({
+          next: (result) => {this.snackBar.open('Пароль изменен', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });},
+          error: (error) => {console.log(error)},
+        })
+      }
+    })
   }
 
   public savePersonData(): void {
@@ -62,8 +72,30 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
     this.person.lastname = this.userLastname.value;
     this.person.email = this.userEmail.value;
     this.personService.Update(this.person.id!, this.person).subscribe({
-      next: (data) => { this.snackBar.open('Данные сохранены', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });},
-      error: (error) => {console.log(error);},
+      next: (data) => { this.snackBar.open('Данные сохранены', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }); },
+      error: (error) => { console.log(error); },
     });
   }
+}
+
+
+@Component({
+  selector: 'change-password',
+  templateUrl: 'change-password.html',
+})
+export class ChangePassword implements OnInit {
+
+  public newPassword: FormControl;
+  public hidePassword: boolean = true;
+
+  constructor(){
+    this.newPassword = new FormControl('', [Validators.required]);
+  }
+ 
+
+  ngOnInit(): void {
+   
+  }
+
+ 
 }
