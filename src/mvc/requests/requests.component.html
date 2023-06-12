@@ -12,8 +12,7 @@
                     <mat-card-subtitle>Заявитель: {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content (click)="openRequestInfo(item)">
-                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
-                            <small>{{item.place.description}}</small></span></p>
+                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> | <small>{{item.place.description}}</small></span></p>
                     <p class="description">Описание: {{item.description}}</p>
                 </mat-card-content>
                 <mat-divider></mat-divider>

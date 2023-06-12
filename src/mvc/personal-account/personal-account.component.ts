@@ -66,6 +66,7 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
     })
   }
 
+  //Сохранение введенных данных, и их отправка
   public savePersonData(): void {
     this.person.name = this.userName.value;
     this.person.surname = this.userSurname.value;
@@ -78,7 +79,7 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
   }
 }
 
-
+//Диалоговое окно с изменением пароля
 @Component({
   selector: 'change-password',
   templateUrl: 'change-password.html',

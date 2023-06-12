@@ -8,13 +8,12 @@
                 <mat-card-header>
                     <mat-card-title>Заявка № {{item.id}}</mat-card-title>
                     <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item?.dateTimeStart | date : "EEEE, d MMMM H:mm"}}
-                    </mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item?.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
+                    <mat-card-subtitle>Заявитель: {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
-                            <small>{{item.place.description}}</small></span></p>
-                    <p>Описание: {{item.description}}</p>
+                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> | <small>{{item.place.description}}</small></span></p>
+                    <p class="description">Описание: {{item.description}}</p>
                 </mat-card-content>
                 <mat-divider></mat-divider>
                 <mat-card-actions align="end">
@@ -38,11 +37,12 @@
                 <mat-card-header>
                     <mat-card-title>Заявка № {{item.id}}</mat-card-title>
                     <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EEEE, d MMMM H:mm"}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
+                    <mat-card-subtitle>Заявитель: {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                     <p>Кабинет: {{item.place.name}}</p>
-                    <p>Описание: {{item.description}}</p>
+                    <p class="description">Описание: {{item.description}}</p>
                 </mat-card-content>
             </mat-card>
         </div>
