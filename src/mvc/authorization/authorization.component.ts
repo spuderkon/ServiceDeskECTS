@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 export class AuthorizationComponent implements OnInit {
 
   //login and password formcontrols
-  userLogin: FormControl;
-  userPassword: FormControl;
-  dataIsLoading: boolean = false;
+  public userLogin: FormControl;
+  public userPassword: FormControl;
+  public dataIsLoading: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
     this.userLogin = new FormControl('PerOleg', [Validators.required, Validators.pattern('^[a-zA-Z]+$')])
@@ -22,32 +22,32 @@ export class AuthorizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
 
-  login(): void {
+  public login(): void {
     this.dataIsLoading = true
     this.authService.authorize(this.userLogin.value, this.userPassword.value)
       .subscribe({
         next: (data) => {
-          if(this.authService.getRole() == 'admin' || this.authService.getRole() == 'laborant'){
+          if (this.authService.getRole() == 'admin' || this.authService.getRole() == 'laborant') {
             this.router.navigate(['/requests'])
           }
-          else{
+          else {
             this.router.navigate(['/submittedRequests'])
           }
         },
         error: (error) => (
           console.log(error.error),
-          this.snackBar.open('Данные введены неверно', 'Ок', {duration: 5000,panelClass: ['classicSnackBar']}), this.dataIsLoading = false),
+          this.snackBar.open('Данные введены неверно', 'Ок', { duration: 5000, panelClass: ['classicSnackBar'] }), this.dataIsLoading = false),
       });
   }
 
-  clearValue(value: FormControl): void {
+  public clearValue(value: FormControl): void {
     value.setValue('');
   }
 
-  getLoginErrorMessage(): string {
+  public getLoginErrorMessage(): string {
     if (this.userLogin.hasError('required')) {
       return 'Поле UserName является обязательным';
     }

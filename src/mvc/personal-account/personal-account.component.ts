@@ -38,7 +38,7 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
   //Рефреш данных пользователя
   public refreshPerson(): void {
     this.personService.GetMy().subscribe(data => {
-      this.person = new Person(data);
+      this.person = data;
       this.userName.setValue(this.person.name);
       this.userSurname.setValue(this.person.surname);
       this.userLastname.setValue(this.person.lastname);
@@ -72,7 +72,7 @@ export class PersonalAccountComponent implements OnInit, OnChanges {
     this.person.surname = this.userSurname.value;
     this.person.lastname = this.userLastname.value;
     this.person.email = this.userEmail.value;
-    this.personService.Update(this.person.id!, this.person).subscribe({
+    this.personService.Update(this.person).subscribe({
       next: (data) => { this.snackBar.open('Данные сохранены', 'Ок', { duration: 5000, panelClass: "classicSnackBar" }); },
       error: (error) => { console.log(error); },
     });

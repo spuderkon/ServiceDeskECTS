@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RequestService } from '../services/http/request/request.service';
 import { Request } from '../models/request/request.model';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
+import { WorkOnRequestServiceService } from '../services/http/workOnRequestService/work-on-request-service.service';
+import { Service } from '../models/service/service.model';
+import { WorkOnRequestService } from '../services/http/workOnRequest/work-on-request.service';
+import { WorkOnRequest } from '../models/workOnRequest/work-on-request.model';
 
 export interface DialogData {
   request: Request;
@@ -31,7 +36,6 @@ export class MyRequestsComponent implements OnInit {
   private refreshActiveRequests(): void {
     this.requestService.GetMyByImpActiveAll().subscribe(data => {
       this.activeRequests = data;
-      console.log(this.activeRequests);
     });
   }
 
@@ -41,6 +45,64 @@ export class MyRequestsComponent implements OnInit {
       this.completedRequestsLoaded = true;
     });
   }
+
+  public createWorkOnRequest(request: Request): void {
+    const dialogRef = this.dialog.open(AddWorkOnRequestDialog, {data: {request}, width: '30vw' })
+  }
+}
+@Component({
+  selector: 'add-work-on-request-dialog',
+  templateUrl: 'add-work-on-request-dialog.html',
+})
+export class AddWorkOnRequestDialog implements OnInit {
+
+  public services: Service[];
+
+  public service: FormControl;
+  public comment: FormControl;
+
+  public workOnRequest: WorkOnRequest;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,private workOnRequestService: WorkOnRequestService, 
+              private workOnRequestServices: WorkOnRequestServiceService, private dialogRef: MatDialogRef<MyRequestsComponent>) {
+    this.service = new FormControl('', [Validators.required]);
+    this.comment = new FormControl('', [Validators.required]);
+    this.services = new Array<Service>;
+    this.workOnRequest = new WorkOnRequest();
+  }
+
+
+  ngOnInit(): void {
+    this.refreshServices();
+  }
+
+  public refreshServices(): void {
+    this.workOnRequestServices.GetAll().subscribe({
+      next: (data) => {
+        this.services = data;
+      },
+      error: (error) => {
+        console.log(error.error);
+      },
+    })
+  }
+
+  public createWorkOnRequest(): void {
+    this.workOnRequest.serviceId = this.service.value;
+    this.workOnRequest.comment = this.comment.value;
+    this.workOnRequest.requestId = this.data.request.id;
+    this.workOnRequestService.AddMy(this.workOnRequest).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => {
+        console.log(error.error);
+      },
+    })
+    this.dialogRef.close();
+  }
+}
+
 
   // public openRequestInfo(request: Request) {
   //   const dialogRef = this.dialog.open(RequestInfoDialogA, { data: { request } })
@@ -66,6 +128,5 @@ export class MyRequestsComponent implements OnInit {
   // }
 
   // public changeRequest(request: Request) {
-  //   const dialogRef = this.dialog.open(ChangeRequestDialogA, { data: { request } }); 
+  //   const dialogRef = this.dialog.open(ChangeRequestDialogA, { data: { request } });
   // }
-}

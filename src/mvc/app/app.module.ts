@@ -39,7 +39,7 @@ import { ChangeRequestDialogSR, CompleteRequestDialogSR, RequestInfoDialogSR, Su
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
-import { MyRequestsComponent } from '../my-requests/my-requests.component';
+import { MyRequestsComponent, AddWorkOnRequestDialog, } from '../my-requests/my-requests.component';
 import { CrudPersonsComponent, EditPersonDialog, DeletePersonDialog } from '../crud-persons/crud-persons.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSortModule } from '@angular/material/sort';
@@ -65,6 +65,7 @@ registerLocaleData(localeRu, 'ru');
     CrudPersonsComponent,
     EditPersonDialog,
     DeletePersonDialog,
+    AddWorkOnRequestDialog,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +101,7 @@ registerLocaleData(localeRu, 'ru');
     DragDropModule,
     MatSortModule,
   ],
-  providers: [[ AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [[AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

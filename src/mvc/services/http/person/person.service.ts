@@ -27,8 +27,15 @@ export class PersonService {
     return this.http.get<Person[]>(this.apiUrl + '/GetAllLaborants', {headers: this.headers});
   }
 
-  public Update(personId: number, person: Person): Observable<Person>{
-    return this.http.put<Person>(this.apiUrl + '/Update/' + personId,person, {headers: this.headers});
+  public Add(person: Person): Observable<Person>{
+    const body = {
+      
+    }
+    return this.http.post<Person>(this.apiUrl + '/Add', body,{headers: this.headers});
+  }
+
+  public Update(person: Person): Observable<Person>{
+    return this.http.put<Person>(this.apiUrl + '/Update/' + person.id,person, {headers: this.headers});
   }
 
   public Delete(personId: number): Observable<Person>{

@@ -4,13 +4,14 @@ import { PersonService } from '../services/http/person/person.service';
 import { DataSource } from '@angular/cdk/collections';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { PostOrDepartment } from '../models/postOrDepartment/post-or-department.model';
 import { Role } from '../models/role/role.model';
 import { PostService } from '../services/http/post/post.service';
 import { DepartmentService } from '../services/http/department/department.service';
 import { RoleService } from '../services/http/role/role.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 export interface DialogData {
@@ -35,20 +36,25 @@ export class CrudPersonsComponent implements OnInit, AfterViewInit {
 
   constructor(private personService: PersonService, private dialog: MatDialog) {
     this.displayedColumns = ['FIO', 'Post', 'Email', 'Edit', 'Delete'];
+    this.persons = new Array<Person>;
+    this.dataSource = new MatTableDataSource<Person>();
+    
   }
 
   ngOnInit(): void {
     this.refreshPersons();
+    
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    
   }
 
   private refreshPersons(): void {
     this.personService.GetAll().subscribe(data => {
       this.persons = data;
-      this.dataSource = new MatTableDataSource(this.persons)
+      this.dataSource = new MatTableDataSource(this.persons);
+      this.dataSource.paginator = this.paginator;
     })
   }
 
@@ -59,10 +65,18 @@ export class CrudPersonsComponent implements OnInit, AfterViewInit {
 
   public createPerson() {
     const dialogRef = this.dialog.open(EditPersonDialog);
+    
+    dialogRef.afterClosed().subscribe(result =>{
+      this.refreshPersons();
+    });
   }
 
   public editPerson(person: Person) {
     const dialogRef = this.dialog.open(EditPersonDialog, { data: { person } });
+
+    dialogRef.afterClosed().subscribe(result =>{
+      
+    });
   }
 
   public deletePerson(person: Person) {
@@ -108,15 +122,17 @@ export class EditPersonDialog implements OnInit {
   public roles: Role[]
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private postService: PostService,
-              private deparmentService: DepartmentService, private roleService: RoleService) {
+              private deparmentService: DepartmentService, private roleService: RoleService,
+              private dialogRef: MatDialogRef<CrudPersonsComponent>, private personService: PersonService,
+              private snackBar: MatSnackBar) {
     this.name = new FormControl('', [Validators.required]);
     this.surname = new FormControl('', [Validators.required]);
     this.lastname = new FormControl('', [Validators.required]);
-    this.email = new FormControl('', [Validators.required]);
+    this.email = new FormControl('', [Validators.required, Validators.email]);
     this.postId = new FormControl('', [Validators.required]);
-    this.comment = new FormControl('', [Validators.required]);
+    this.comment = new FormControl('');
     this.departmentId = new FormControl('', [Validators.required]);
-    this.userName = new FormControl('', [Validators.required]);
+    this.userName = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]);
     this.password = new FormControl('', [Validators.required]);
     this.roleId = new FormControl('', [Validators.required]);
     this.posts = new Array<PostOrDepartment>;
@@ -126,6 +142,9 @@ export class EditPersonDialog implements OnInit {
     if (data != null) {
       this.person = data.person;
       this.refreshControlsData()
+    }
+    else{
+      this.person = new Person();
     }
   }
 
@@ -173,12 +192,60 @@ export class EditPersonDialog implements OnInit {
   public refreshRoles(): void{
     this.roleService.GetAll().subscribe({
       next: (data) => {
-        console.log(data);
         this.roles = data;
       },
       error: (error) => {
         console.log(error.error)
       }
+    });
+  }
+
+  public savePerson(): void{
+    this.dialogRef.close();
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.person.name = this.name.value;
+      this.person.surname = this.surname.value;
+      this.person.lastname = this.lastname.value;
+      this.person.email = this.email.value;
+      this.person.userName = this.userName.value;
+      this.person.password = this.password.value;
+      this.person.comment = this.comment.value;
+      this.person.postId = this.postId.value;
+      this.person.departmentId = this.departmentId.value;
+      this.person.roleId = this.roleId.value;
+      this.personService.Update(this.person).subscribe({
+        next: (result) => {
+          this.snackBar.open('Пользователь сохранен', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
+    });
+  }
+
+  public createPerson(): void{
+    this.dialogRef.close();
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.person.name = this.name.value;
+      this.person.surname = this.surname.value;
+      this.person.lastname = this.lastname.value;
+      this.person.email = this.email.value;
+      this.person.userName = this.userName.value;
+      this.person.password = this.password.value;
+      this.person.comment = this.comment.value;
+      this.person.postId = this.postId.value;
+      this.person.departmentId = this.departmentId.value;
+      this.person.roleId = this.roleId.value;
+      
+      this.personService.Add(this.person).subscribe({
+        next: (result) => {
+          this.snackBar.open('Пользователь создан', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
     });
   }
 }

@@ -1,6 +1,6 @@
 <div class="submittedApplication">
     <div class="activeRequests">
-        <h1>Активные заявки:</h1>
+        <h1>Мои заявки:</h1>
         <mat-divider></mat-divider>
         <div class="requests">
             <mat-card class="request" *ngFor="let item of activeRequests"
@@ -17,13 +17,13 @@
                 </mat-card-content>
                 <mat-divider></mat-divider>
                 <mat-card-actions align="end">
-                    <button mat-button>Изменить</button>
+                    <button mat-button (click)="createWorkOnRequest(item)">Добавить работы</button>
                     <button mat-button>Завершить</button>
                 </mat-card-actions>
             </mat-card>
         </div>
     </div>
-    <div class="completedRequests">
+    <div class="completedRequests" *ngIf="false">
         <h1>Завершенные:</h1>
         <mat-divider></mat-divider>
         <div class="button-container">

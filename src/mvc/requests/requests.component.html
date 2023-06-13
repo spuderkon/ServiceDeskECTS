@@ -27,7 +27,7 @@
         <div *ngFor="let item of laborantsRequests">
             <h1>{{item.laborant.name}}</h1>
             <mat-divider></mat-divider>
-            <h2 *ngIf="item.activeRequests.length == 0" style="text-align: center;">Заявок нету</h2>
+            <h2 *ngIf="item.activeRequests.length == 0" style="text-align: center;">Заявок нет</h2>
             <div class="requests-container">
                 <mat-card class="request" *ngFor="let item of item.activeRequests" (click)="openRequestInfo(item)"
                 [style.background-color]="item.requestStatusId == 1 ? 'rgb(240, 220, 164)' : item.requestStatusId == 3 ? 'rgb(154, 194, 240)' : 'white'">
