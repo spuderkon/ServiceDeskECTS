@@ -19,7 +19,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -35,14 +35,14 @@ import { CreateRequestComponent } from '../create-request/create-request.compone
 import { ChangePassword, PersonalAccountComponent } from '../personal-account/personal-account.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { RequestsComponent, ChangeRequestDialogR, CompleteRequestDialogR, RequestInfoDialogR } from '../requests/requests.component'
-import { RequestComponent } from '../request/request.component';
 import { ChangeRequestDialogSR, CompleteRequestDialogSR, RequestInfoDialogSR, SubmittedRequestsComponent } from '../submitted-requests/submitted-requests.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
 import { MyRequestsComponent } from '../my-requests/my-requests.component';
-import { CrudPersonsComponent, CreateUserDialog } from '../crud-persons/crud-persons.component';
+import { CrudPersonsComponent, EditPersonDialog, DeletePersonDialog } from '../crud-persons/crud-persons.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatSortModule } from '@angular/material/sort';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -57,14 +57,14 @@ registerLocaleData(localeRu, 'ru');
     ChangeRequestDialogR,
     RequestInfoDialogR,
     CompleteRequestDialogR,
-    RequestComponent,
     SubmittedRequestsComponent,
     ChangeRequestDialogSR,
     RequestInfoDialogSR,
     CompleteRequestDialogSR,
     MyRequestsComponent,
     CrudPersonsComponent,
-    CreateUserDialog,
+    EditPersonDialog,
+    DeletePersonDialog,
   ],
   imports: [
     BrowserModule,
@@ -98,6 +98,7 @@ registerLocaleData(localeRu, 'ru');
     MatExpansionModule,
     MatSnackBarModule,
     DragDropModule,
+    MatSortModule,
   ],
   providers: [[ AuthGuard], { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]

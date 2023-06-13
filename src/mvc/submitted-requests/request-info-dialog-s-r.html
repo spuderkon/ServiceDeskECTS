@@ -15,6 +15,7 @@
     <h1 mat-dialog-title *ngIf="workOnRequests.length != 0">Работы по заявке:</h1>
     <div class="work-on-request" *ngFor="let item of workOnRequests">
         <h3>{{item.service?.name}}</h3>
+        <p *ngIf="item.implementer?.email != null">Для связи: {{item.implementer?.email}}</p>
         <span><strong>Исполнитель: </strong>{{item.implementer?.surname}} {{item.implementer?.name}}</span><span style="margin-left: 10px;"><strong>Дата и время: </strong>{{item.dateTime | date : "EEEE, d MMMM H:mm"}}</span>
         <p>Проведенные работы: {{item.comment}}</p>
         <mat-divider></mat-divider>

@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'ServiceDeskECTS';
 
-  constructor(public router:Router, private authService: AuthService){
+  constructor(public router:Router, public authService: AuthService){
 
   }
 

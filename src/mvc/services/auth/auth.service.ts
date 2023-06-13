@@ -37,7 +37,6 @@ export class AuthService {
     const encrypted = crypto.AES.encrypt(password, 'password');
     localStorage.setItem('token', token);
     const decodedToken = this.getDecodedToken();
-    const expiresAt = moment().add(decodedToken.exp, 'seconds');
     localStorage.setItem('userName', userName);
     localStorage.setItem('password', encrypted.toString());
     localStorage.setItem('role', decodedToken.role);
@@ -52,14 +51,20 @@ export class AuthService {
 
   public refreshToken() {
     console.log('refreshing token...')
-    console.log(localStorage.getItem('token'));
     const bytes = crypto.AES.decrypt(localStorage.getItem('password')!, 'password');
     let userName: string = localStorage.getItem('userName')!;
     let password: string = bytes.toString(crypto.enc.Utf8);
     this.httpParams = new HttpParams().set('username', userName).set('password', password);
     console.log(this.httpParams);
-    this.http.post(this.apiUrl + '/Authorize', this.httpParams)
-    .subscribe((token: any) => (console.log(token.token),this.setSession(token.token,userName,password)));
+    this.http.post(this.apiUrl + '/Authorize', this.httpParams).subscribe({
+      next: (data: any) => {
+        console.log(data.token);
+        this.setSession(data.token,userName,password);
+      },
+      error: (error) => {
+        console.log(error.error);
+      },
+    })
   }
 
   public logout(): void {

@@ -15,55 +15,55 @@
         <div>
             <h4>Контактная информация</h4>
             <mat-form-field appearance="fill">
-                <mat-label>Имя</mat-label>
-                <input matInput>
+                <mat-label>Фамилия</mat-label>
+                <input matInput [formControl]="surname">
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label>Фамилия</mat-label>
-                <input matInput>
+                <mat-label>Имя</mat-label>
+                <input matInput [formControl]="name">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Отчество</mat-label>
-                <input matInput>
+                <input matInput [formControl]="lastname">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Эл. почта</mat-label>
-                <input matInput>
+                <input matInput [formControl]="email">
             </mat-form-field>
         </div>
         <div>
             <h4>Входные данные:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Логин</mat-label>
-                <input matInput>
+                <input matInput [formControl]="userName">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Пароль</mat-label>
-                <input matInput>
+                <input matInput [formControl]="password">
             </mat-form-field>
         </div>
         <div>
             <h4>О пользователе:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Комментарий</mat-label>
-                <input matInput>
+                <input matInput [formControl]="comment">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Должность</mat-label>
-                <mat-select>
-                    <mat-option value="">Преподаватель</mat-option>
+                <mat-select [formControl]="postId">
+                    <mat-option *ngFor="let item of posts" [value]="item.id">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Отделение</mat-label>
-                <mat-select>
-                    <mat-option value="">Администрация</mat-option>
+                <mat-select [formControl]="departmentId">
+                    <mat-option *ngFor="let item of departments" [value]="item.id">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Роль</mat-label>
-                <mat-select>
-                    <mat-option value="">Заявитель</mat-option>
+                <mat-select [formControl]="roleId">
+                    <mat-option *ngFor="let item of roles" [value]="item.id">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

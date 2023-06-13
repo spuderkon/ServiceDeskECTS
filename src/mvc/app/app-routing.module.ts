@@ -4,7 +4,6 @@ import { AuthorizationComponent } from '../authorization/authorization.component
 import { CreateRequestComponent } from '../create-request/create-request.component';
 import { PersonalAccountComponent } from '../personal-account/personal-account.component';
 import { RequestsComponent } from '../requests/requests.component';
-import { RequestComponent } from '../request/request.component';
 import { SubmittedRequestsComponent } from '../submitted-requests/submitted-requests.component';
 import { AuthGuard } from '../services/guards/auth/auth.guard';
 import { AppComponent } from './app.component';
@@ -18,8 +17,7 @@ const routes: Routes = [
   {path: 'lk', component: PersonalAccountComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
   {path: 'createRequest', component: CreateRequestComponent, canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
   {path: 'submittedRequests', component: SubmittedRequestsComponent,  canActivate:[AuthGuard], data: {role: ['client','laborant','admin']}},
-
-  {path: 'request/:id', component: RequestComponent, data: {role: ['laborant','admin']}},
+  
   {path: 'requests', component: RequestsComponent, canActivate:[AuthGuard], data: {role: ['laborant','admin']}},
   {path: 'myRequests', component: MyRequestsComponent,  canActivate:[AuthGuard], data: {role: ['laborant','admin']}},
 

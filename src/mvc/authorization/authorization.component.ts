@@ -29,9 +29,16 @@ export class AuthorizationComponent implements OnInit {
     this.dataIsLoading = true
     this.authService.authorize(this.userLogin.value, this.userPassword.value)
       .subscribe({
-        next: () => (this.router.navigate(['/'])),
+        next: (data) => {
+          if(this.authService.getRole() == 'admin' || this.authService.getRole() == 'laborant'){
+            this.router.navigate(['/requests'])
+          }
+          else{
+            this.router.navigate(['/submittedRequests'])
+          }
+        },
         error: (error) => (
-          console.log(error),
+          console.log(error.error),
           this.snackBar.open('Данные введены неверно', 'Ок', {duration: 5000,panelClass: ['classicSnackBar']}), this.dataIsLoading = false),
       });
   }
@@ -47,22 +54,3 @@ export class AuthorizationComponent implements OnInit {
     return this.userLogin.hasError('pattern') ? 'Только латинские буквы' : '';
   }
 }
-
-// @Component({
-//   selector: 'snackBarError',
-//   templateUrl: 'snackBarError.html',
-//   styles: [
-//     `
-//     :host {
-//       display: flex;
-//     }
-
-//     .example-pizza-party {
-//       color: hotpink;
-//     }
-//   `,
-//   ],
-// })
-// export class SnackBarError {
-//   snackBarRef = inject(MatSnackBarRef);
-// }

@@ -1,11 +1,11 @@
 export class Role {
     id: number | null;
-    role1: string | null;
+    name: string | null;
     comment: string | null;
 
     constructor(){
         this.id = null;
-        this.role1 = null;
+        this.name = null;
         this.comment = null;
     }
 }

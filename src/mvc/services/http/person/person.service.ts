@@ -30,4 +30,11 @@ export class PersonService {
   public Update(personId: number, person: Person): Observable<Person>{
     return this.http.put<Person>(this.apiUrl + '/Update/' + personId,person, {headers: this.headers});
   }
+
+  public Delete(personId: number): Observable<Person>{
+    const body = {
+      'id': personId,
+    }
+    return this.http.delete<Person>(this.apiUrl + '/Delete/'+ personId, {headers: this.headers})
+  }
 }

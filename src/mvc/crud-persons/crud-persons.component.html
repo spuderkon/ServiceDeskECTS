@@ -1,83 +1,60 @@
-<div class="users-list">
-    <div>
-        <div class="control-panel">
-            <h2>Пользователи:</h2>
-            <div style="margin-top: 2vh;">
-                <button mat-mini-fab color="primary" (click)="openCreateUserDialog()"><mat-icon>add</mat-icon></button>
-            </div>
+<div class="crud-persons">
+    <div class="control-panel">
+        <div style="display: flex;">
+          <h2>Пользователи:</h2>
+            <mat-form-field style="margin: auto 5%;">
+                <mat-label>Поиск</mat-label>
+                <input matInput (keyup)="applyFilter($event)" #input>
+            </mat-form-field>
         </div>
+            <button mat-mini-fab (click)="createPerson()" style="background-color: rgb(183, 228, 146);">
+                <mat-icon>add</mat-icon>
+            </button>
+    </div>
+    <div class="persons-container" class="mat-elevation-z8" style="width: 100%;">
 
-        <div class="persons">
-            <mat-accordion *ngFor="let item of persons">
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title style="text-align: center;">
-                            {{item.surname}} {{item.name}} {{item.lastname}}
-                        </mat-panel-title>
-                        <mat-panel-description>
-                          
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <div class="expansion-description">
-                        <div>
-                            <h4>Контактная информация</h4>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Имя</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Фамилия</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Отчество</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Эл. почта</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <h4>Входные данные:</h4>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Логин</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Пароль</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <h4>О пользователе:</h4>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Комментарий</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Должность</mat-label>
-                                <mat-select>
-                                    <mat-option value="">Преподаватель</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Отделение</mat-label>
-                                <mat-select>
-                                    <mat-option value="">Администрация</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Роль</mat-label>
-                                <mat-select>
-                                    <mat-option value="">Заявитель</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <button mat-raised-button style="float: right;">Сохранить</button>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
+        <table mat-table [dataSource]="dataSource" >
+            <ng-container matColumnDef="FIO">
+                <th mat-header-cell *matHeaderCellDef>ФИО</th>
+                <td mat-cell *matCellDef="let item">{{item?.surname}} {{item?.name}} {{item?.lastname}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Post">
+                <th mat-header-cell *matHeaderCellDef>Должность</th>
+                <td mat-cell *matCellDef="let item">{{item.post?.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let item">{{item?.email}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Edit">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let item">
+                    <button mat-icon-button (click)="editPerson(item)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Delete">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let item">
+                    <button mat-icon-button (click)="deletePerson(item)" [disabled]="true">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">По запросу "{{input.value}}" ничего не подходит</td>
+            </tr>
+
+        </table>
+        <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
     </div>
 </div>
