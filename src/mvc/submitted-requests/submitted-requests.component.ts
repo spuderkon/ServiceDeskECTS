@@ -228,7 +228,7 @@ export class RequestInfoDialogSR implements OnInit {
   }
 
   public refreshWorkOnRequest(): void {
-    this.workOnRequestService.GetByRequestAll(this.request.id!).subscribe(data => {
+    this.workOnRequestService.GetByMyRequestAll(this.request.id!).subscribe(data => {
       this.workOnRequests = data;
       console.log(this.workOnRequests);
     })

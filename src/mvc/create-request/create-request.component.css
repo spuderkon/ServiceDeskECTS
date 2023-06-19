@@ -6,7 +6,7 @@ textarea{
 mat-card {
     background-color: #dfe9f3;
     width: 30vw;
-    height: 40vh;
+    height: 40%;
 }
 
 mat-form-field {

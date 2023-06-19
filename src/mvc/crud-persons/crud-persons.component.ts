@@ -34,7 +34,7 @@ export class CrudPersonsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private personService: PersonService, private dialog: MatDialog) {
+  constructor(private personService: PersonService, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.displayedColumns = ['FIO', 'Post', 'Email', 'Edit', 'Delete'];
     this.persons = new Array<Person>;
     this.dataSource = new MatTableDataSource<Person>();
@@ -86,7 +86,7 @@ export class CrudPersonsComponent implements OnInit, AfterViewInit {
       if (result == true) {
         this.personService.Delete(person.id!).subscribe({
           next: (result) => {
-            console.log(result);
+            this.snackBar.open('Пользователь удален', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });
           },
           error: (error) => {
             console.log(error.error)
@@ -225,9 +225,7 @@ export class EditPersonDialog implements OnInit {
   }
 
   public createPerson(): void{
-    this.dialogRef.close();
-    this.dialogRef.afterClosed().subscribe(() => {
-      this.person.name = this.name.value;
+    this.person.name = this.name.value;
       this.person.surname = this.surname.value;
       this.person.lastname = this.lastname.value;
       this.person.email = this.email.value;
@@ -246,7 +244,7 @@ export class EditPersonDialog implements OnInit {
           console.log(error.error);
         }
       });
-    });
+    this.dialogRef.close();
   }
 }
 

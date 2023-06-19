@@ -18,6 +18,10 @@ export class WorkOnRequestService {
     return this.http.get<WorkOnRequest[]>(this.apiUrl + '/GetByRequestAll/' + requestId, {headers: this.headers});
   }
 
+  public GetByMyRequestAll(requestId: number): Observable<WorkOnRequest[]>{
+    return this.http.get<WorkOnRequest[]>(this.apiUrl + '/GetByMyRequestAll/' + requestId, {headers: this.headers});
+  }
+
   public AddMy(workOnRequest: WorkOnRequest): Observable<WorkOnRequest>{
     const body = { 
       'serviceId': workOnRequest.serviceId,

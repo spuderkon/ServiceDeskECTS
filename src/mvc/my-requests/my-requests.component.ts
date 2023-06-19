@@ -7,6 +7,7 @@ import { WorkOnRequestServiceService } from '../services/http/workOnRequestServi
 import { Service } from '../models/service/service.model';
 import { WorkOnRequestService } from '../services/http/workOnRequest/work-on-request.service';
 import { WorkOnRequest } from '../models/workOnRequest/work-on-request.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface DialogData {
   request: Request;
@@ -64,7 +65,8 @@ export class AddWorkOnRequestDialog implements OnInit {
   public workOnRequest: WorkOnRequest;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,private workOnRequestService: WorkOnRequestService, 
-              private workOnRequestServices: WorkOnRequestServiceService, private dialogRef: MatDialogRef<MyRequestsComponent>) {
+              private workOnRequestServices: WorkOnRequestServiceService, private dialogRef: MatDialogRef<MyRequestsComponent>,
+              private snackBar: MatSnackBar,) {
     this.service = new FormControl('', [Validators.required]);
     this.comment = new FormControl('', [Validators.required]);
     this.services = new Array<Service>;
@@ -93,7 +95,7 @@ export class AddWorkOnRequestDialog implements OnInit {
     this.workOnRequest.requestId = this.data.request.id;
     this.workOnRequestService.AddMy(this.workOnRequest).subscribe({
       next: (data) => {
-        console.log(data);
+        this.snackBar.open('Работа добавлена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });
       },
       error: (error) => {
         console.log(error.error);

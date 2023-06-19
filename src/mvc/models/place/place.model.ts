@@ -1,18 +1,21 @@
+import { ShortTermMove } from "../shortTermMove/short-term-move.model";
+import { UnitPlace } from "../unitPlace/unit-place.model";
+
 export class Place {
     id: number | null;
     name: string | null;
     description: string | null;
     requests: Request[] | null;
-    shortTermMoves: string[] | null;
-    unitPlaces: string[] | null;
+    shortTermMoves: ShortTermMove[] | null;
+    unitPlaces: UnitPlace[] | null;
 
     constructor() {
         this.id = null;
         this.name = null;
         this.description = null;
         this.requests = new Array<Request>;
-        this.shortTermMoves = new Array<string>;
-        this.unitPlaces = new Array<string>;
+        this.shortTermMoves = new Array<ShortTermMove>;
+        this.unitPlaces = new Array<UnitPlace>;
     }
 
     // constructor(place: Place) {
