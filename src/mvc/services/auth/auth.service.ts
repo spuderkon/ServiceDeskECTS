@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, share, shareReplay, tap } from 'rxjs/operators';
+import { CookieService } from 'angular2-cookie';
 
 import * as moment from "moment";
 import jwt_decode from 'jwt-decode';
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 import * as crypto from 'crypto-js';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
@@ -17,7 +18,7 @@ export class AuthService {
   private httpParams = new HttpParams();
   private headers = new HttpHeaders().set('Authorization', 'Bearer '+ localStorage.getItem('token'));
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
 
   public authorize(userName: string, password: string) {
     console.log('Loggining');
@@ -44,8 +45,8 @@ export class AuthService {
     localStorage.setItem("expires_At", JSON.stringify(decodedToken.exp * 1000));
   }
 
+  //Set fake expiration date to localStorage
   public testRefreshingToken(): void {
-    //Fake expiration date
     localStorage.setItem("expires_At", JSON.stringify(1684260000* 1000));
   }
 
@@ -70,6 +71,7 @@ export class AuthService {
   public logout(): void {
     localStorage.clear();
     this.router.navigate(['/auth']);
+    window.location.reload();
   }
 
   public isLoggedIn(): boolean {

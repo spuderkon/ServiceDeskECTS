@@ -17,8 +17,8 @@ export class AuthorizationComponent implements OnInit {
   public dataIsLoading: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
-    this.userLogin = new FormControl('PerOleg', [Validators.required, Validators.pattern('^[a-zA-Z]+$')])
-    this.userPassword = new FormControl('123', [Validators.required])
+    this.userLogin = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z]+$')])
+    this.userPassword = new FormControl('', [Validators.required])
   }
 
   ngOnInit(): void {
