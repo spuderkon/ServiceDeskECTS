@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Person } from 'src/mvc/models/person/person.model';
+import { Request } from 'src/mvc/models/request/request.model';
 import { WorkOnRequest } from 'src/mvc/models/workOnRequest/work-on-request.model';
 
 @Injectable({
@@ -20,6 +22,15 @@ export class WorkOnRequestService {
 
   public GetByMyRequestAll(requestId: number): Observable<WorkOnRequest[]>{
     return this.http.get<WorkOnRequest[]>(this.apiUrl + '/GetByMyRequestAll/' + requestId, {headers: this.headers});
+  }
+
+  public Add(request: Request, serviceId: number, implementer: Person): Observable<WorkOnRequest>{
+    const body = { 
+      'requestId': request.id,
+      'serviceId': serviceId,
+      'implementerId': implementer.id,
+    }
+    return this.http.post<WorkOnRequest>(this.apiUrl + '/Add', body, {headers: this.headers});
   }
 
   public AddMy(workOnRequest: WorkOnRequest): Observable<WorkOnRequest>{

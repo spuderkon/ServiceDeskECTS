@@ -17,11 +17,22 @@
 }
 
 .request {
-    width: 18vw;
+    width: 15vw;
+    height: 26vh;
     margin: 5px;
 }
 
-.description {
+.laborant-request{
+    width: 15vw;
+    height: 26vh;
+    margin: 5px;
+}
+
+.laborant-request:hover {
+    background-color: aliceblue !important;
+}
+
+.short-string {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -40,6 +51,7 @@
 .completedRequest:hover {
     background-color: rgb(207, 238, 207);
 }
+
 
 .autorenew-button {
     margin-top: 1vh;

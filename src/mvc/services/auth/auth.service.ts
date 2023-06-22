@@ -18,7 +18,7 @@ export class AuthService {
   private httpParams = new HttpParams();
   private headers = new HttpHeaders().set('Authorization', 'Bearer '+ localStorage.getItem('token'));
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   public authorize(userName: string, password: string) {
     console.log('Loggining');

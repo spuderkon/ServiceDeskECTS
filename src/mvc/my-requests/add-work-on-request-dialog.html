@@ -11,14 +11,14 @@
 
 <h2 mat-dialog-title>Работы по заявке</h2>
 <div mat-dialog-content class="add-work-on-request-dialog">
-  <mat-form-field appearance="fill" style="width: 25vw;">
+  <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Вид работ:</mat-label>
     <mat-select [formControl]="service">
-      <mat-option *ngFor="let item of services" [value]="item.id">{{item.name}}</mat-option>
+      <mat-option *ngFor="let item of services" [value]="item.id" [disabled]="item.name == 'Принятие заявки' || item.name == 'Завершение заявки' || item.name == 'Отказ от заявки'">{{item.name}}</mat-option>
     </mat-select>
   </mat-form-field>
   <p>
-    <mat-form-field style="width: 25vw;">
+    <mat-form-field style="width: 100%;">
       <mat-label>Описание</mat-label>
       <textarea matInput [formControl]="comment" placeholder="" class="comment" maxlength="255"></textarea>
       <mat-hint align="end">{{comment.value.length}} / 255</mat-hint>

@@ -3,49 +3,85 @@
         <h1>Непринятые заявки:</h1>
         <mat-divider></mat-divider>
         <div class="requests-container">
-            <mat-card class="request" *ngFor="let item of activeRequests"
-                [style.background-color]="item.requestStatusId == 1 ? 'rgb(240, 220, 164)' : item.requestStatusId == 3 ? 'rgb(154, 194, 240)' : 'white'">
-                <mat-card-header (click)="openRequestInfo(item)">
-                    <mat-card-title>Заявка № {{item.id}}</mat-card-title>
-                    <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
-                    <mat-card-subtitle>Заявитель: {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
+            <h2 *ngIf="activeRequests.length == 0" style="text-align: center;">Заявок нет</h2>
+            <mat-card class="request" *ngFor="let request of activeRequests"
+            [style.background-color]="request.importance == 1 ? '#91c8e7' : request.importance == 2 ? '#a0ccbb' : request.requestStatusId == 3 ? '#e7c591' : 'rgb(240, 220, 164)'">
+                <mat-card-header (click)="openRequestInfo(request)">
+                    <mat-card-title>Заявка № {{request.id}}</mat-card-title>
+                    <mat-card-subtitle>Статус: {{request.requestStatus.name}}</mat-card-subtitle>
+                    <mat-card-subtitle>Дата заявки: {{request.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
+                    <mat-card-subtitle class="short-string">Заявитель: {{request.declarant?.name}} {{request.declarant?.lastname}}</mat-card-subtitle>
+                    <mat-card-subtitle>Уровень важности: <strong>{{request.importance}}</strong><strong *ngIf="request.importance == null">Не установлен</strong></mat-card-subtitle>
                 </mat-card-header>
-                <mat-card-content (click)="openRequestInfo(item)">
-                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> | <small>{{item.place.description}}</small></span></p>
-                    <p class="description">Описание: {{item.description}}</p>
+                <mat-card-content (click)="openRequestInfo(request)">
+                    <p class="short-string">Кабинет: {{request.place.name}}<span *ngIf="request.place.description != null"> | <small>{{request.place.description}}</small></span></p>
+                    <p class="short-string">Описание: {{request.description}}</p>
                 </mat-card-content>
-                <mat-divider></mat-divider>
                 <mat-card-actions align="end">
-                    <button mat-button (click)="acceptRequest(item)">Принять</button>
-                    <button mat-button (click)="completeRequest(item)" *ngIf="authService.isAdmin()">Завершить</button>
+                    <mat-divider></mat-divider>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="authService.isAdmin()">
+                        <mat-icon>expand_more</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item [matMenuTriggerFor]="appoint">
+                            <span>Назначить</span>
+                        </button>
+                        <button mat-menu-item [matMenuTriggerFor]="importance">
+                            <span>Принять</span>
+                        </button>
+                        <button mat-menu-item (click)="changeRequest(request)">
+                            <span>Изменить</span>
+                        </button>
+                        <button mat-menu-item (click)="completeRequest(request)">
+                            <span>Завершить</span>
+                        </button>
+                    </mat-menu>
+                    <mat-menu #appoint="matMenu">
+                        <ng-container *ngFor="let laborant of laborants">
+                            <button mat-menu-item [matMenuTriggerFor]="importance"> {{laborant.surname}} {{laborant.name}}</button>
+                            <mat-menu #importance="matMenu">
+                                <button *ngFor="let importance of [1,2,3]" mat-menu-item
+                                    (click)="appointImplementer(laborant, request, importance)">{{importance}}</button>
+                            </mat-menu>
+                        </ng-container>
+                    </mat-menu>
+                    <mat-menu #importance="matMenu">
+                        <button *ngFor="let importance of [1,2,3]" mat-menu-item (click)="acceptRequest(request, importance)">{{importance}}</button>
+                    </mat-menu>
                 </mat-card-actions>
             </mat-card>
         </div>
     </div>
     <div class="laborants-applications">
         <div *ngFor="let item of laborantsRequests">
-            <h1>{{item.laborant.name}}</h1>
+            <h1>{{item.laborant.surname}} {{item.laborant.name}}</h1>
             <mat-divider></mat-divider>
             <h2 *ngIf="item.activeRequests.length == 0" style="text-align: center;">Заявок нет</h2>
             <div class="requests-container">
-                <mat-card class="request" *ngFor="let item of item.activeRequests" (click)="openRequestInfo(item)"
-                [style.background-color]="item.requestStatusId == 1 ? 'rgb(240, 220, 164)' : item.requestStatusId == 3 ? 'rgb(154, 194, 240)' : 'white'">
-                <mat-card-header>
-                    <mat-card-title>Заявка № {{item.id}}</mat-card-title>
-                    <mat-card-subtitle>Статус: {{item.requestStatus.name}}</mat-card-subtitle>
-                    <mat-card-subtitle>Дата заявки: {{item.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
-                    <mat-card-subtitle>Заявитель: {{item.declarant?.surname}} {{item.declarant?.name}} {{item.declarant?.lastname}}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>Кабинет: {{item.place.name}}<span *ngIf="item.place.description != null"> |
-                        <small>{{item.place.description}}</small></span></p>
-                        <p class="description">Описание: {{item.description}}</p>
+                <mat-card class="laborant-request" *ngFor="let request of item.activeRequests"
+                [style.background-color]="request.importance == 1 ? '#91c8e7' : request.importance == 2 ? '#a0ccbb' : request.requestStatusId == 3 ? '#e7c591' : 'white'">
+                    <mat-card-header (click)="openRequestInfo(request)">
+                        <mat-card-title>Заявка № {{request.id}}</mat-card-title>
+                        <mat-card-subtitle>Статус: {{request.requestStatus.name}}</mat-card-subtitle>
+                        <mat-card-subtitle>Дата заявки: {{request.dateTimeStart | date : "EE, d MMMM H:mm"}}</mat-card-subtitle>
+                        <mat-card-subtitle class="short-string">Заявитель: {{request.declarant?.name}} {{request.declarant?.lastname}}</mat-card-subtitle>
+                        <mat-card-subtitle>Уровень важности: <strong>{{request.importance}}</strong></mat-card-subtitle>
+                            
+                    </mat-card-header>
+                    <mat-card-content (click)="openRequestInfo(request)">
+                        <p class="short-string">Кабинет: {{request.place.name}}<span *ngIf="request.place.description != null"> | <small>{{request.place.description}}</small></span></p>
+                        <p class="short-string">Описание: {{request.description}}</p>
                     </mat-card-content>
-                    <mat-divider></mat-divider>
                     <mat-card-actions align="end">
-                        <button mat-button (click)="changeRequest(item)">Изменить</button>
-                        <button mat-button (click)="completeRequest(item)">Завершить</button>
+                        <mat-divider></mat-divider>
+                        <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="authService.isAdmin()">
+                            <mat-icon>expand_more</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="changeRequest(request)">
+                                <span>Изменить</span>
+                            </button>
+                        </mat-menu>
                     </mat-card-actions>
                 </mat-card>
             </div>

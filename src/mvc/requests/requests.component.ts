@@ -34,36 +34,72 @@ export class RequestsComponent implements OnInit {
   public activeRequests: Array<Request>;
   public completedRequestsLoaded: boolean;
 
+  public laborants: Person[];
   public laborantsRequests: LaborantsRequests[];
 
-  constructor(private requestService: RequestService, public dialog: MatDialog, private snackBar: MatSnackBar, 
-              private personService: PersonService, private workOnRequestService: WorkOnRequestService,
-              public authService: AuthService) {
+  constructor(private requestService: RequestService, public dialog: MatDialog, private snackBar: MatSnackBar,
+    private personService: PersonService, private workOnRequestService: WorkOnRequestService,
+    public authService: AuthService) {
     this.activeRequests = new Array<Request>;
     this.laborantsRequests = new Array<LaborantsRequests>;
+    this.laborants = new Array<Person>;
     this.completedRequestsLoaded = false;
   }
 
   ngOnInit(): void {
     this.refreshActiveRequests();
-    if(this.authService.isAdmin()){
+    if (this.authService.isAdmin()) {
       this.refreshLaborantsRequests();
     }
   }
 
+  public appointImplementer(implementer: Person, request: Request, importance: number): void {
+    request.importance = importance;
+    request.requestStatusId = 3;
+    this.requestService.Update(request).subscribe({
+      next: (result) => {
+        console.log(result);
+        this.workOnRequestService.Add(request, 4, implementer).subscribe({
+          next: (result) => {
+            this.activeRequests.splice(this.activeRequests.indexOf(request, 0), 1);
+            this.laborantsRequests.find(x => x.laborant == implementer)?.activeRequests.push(request);
+            this.snackBar.open('Заявка назначена', 'Ок', { duration: 5000, panelClass: 'classicSnackBar' });
+          },
+          error: (error) => {
+            console.log(error.error);
+          }
+        });
+      },
+      error: (error) => {
+        console.log(error.error);
+      }
+    });
+  }
+
   private refreshActiveRequests(): void {
-    this.requestService.GetActiveAll().subscribe(data => {
-      this.activeRequests = data;
+    this.requestService.GetActiveAll().subscribe({
+      next: (data) => {
+        this.activeRequests = data;
+      },
+      error: (error) => {
+        console.log(error.error);
+      },
     });
   }
 
   private refreshLaborantsRequests(): void {
-    this.personService.GetAllLaborants().subscribe(data => {
-      data.forEach(item => {
-        this.requestService.GetByImpActiveAll(item.id!).subscribe(data => {
-          this.laborantsRequests.push({ laborant: item, activeRequests: data });
-        })
-      });
+    this.personService.GetAllLaborants().subscribe({
+      next: (data) => {
+        this.laborants = data;
+        this.laborants.forEach(item => {
+          this.requestService.GetByImpActiveAll(item.id!).subscribe(data => {
+            this.laborantsRequests.push({ laborant: item, activeRequests: data });
+          })
+        });
+      },
+      error: (error) => {
+        console.log(error.error);
+      },
     })
   }
 
@@ -71,14 +107,23 @@ export class RequestsComponent implements OnInit {
     const dialogRef = this.dialog.open(RequestInfoDialogR, { data: { request } })
   }
 
-  public acceptRequest(request: Request) {
-    this.workOnRequestService.AddMyAccepted(request.id!).subscribe({
+  public acceptRequest(request: Request, importance: number) {
+    request.importance = importance;
+    this.requestService.Update(request).subscribe({
       next: (result) => {
-        this.activeRequests.splice(this.activeRequests.indexOf(request,0),1);
-        this.snackBar.open('Заявка принята', 'Ок', {panelClass: 'classicSnackBar'});
+        this.workOnRequestService.AddMyAccepted(request.id!).subscribe({
+          next: (result) => {
+            this.activeRequests.splice(this.activeRequests.indexOf(request, 0), 1);
+            this.snackBar.open('Заявка принята', 'Ок', { duration: 5000, panelClass: 'classicSnackBar' });
+          },
+          error: (error) => { console.log(error.error); }
+        });
       },
-      error: (error) => {console.log(error.error);}
+      error: (error) => {
+        console.log(error.error);
+      },
     });
+
   }
 
   public completeRequest(request: Request) {
@@ -205,7 +250,7 @@ export class ChangeRequestDialogR implements OnInit {
     this.request.declarantId = this.selectedPerson.value.id;
     this.request.declarant = this.selectedPerson.value;
 
-    this.requestService.UpdateMy(this.request).subscribe({
+    this.requestService.Update(this.request).subscribe({
       next: (data) => {
         this.snackBar.open('Заявка изменена', 'Ок', { panelClass: "classicSnackBar" })
       },
@@ -238,11 +283,11 @@ export class CompleteRequestDialogR implements OnInit {
 export class RequestInfoDialogR implements OnInit {
 
   public request: Request;
-  public workOnRequests: WorkOnRequest[]
+  public worksOnRequest: WorkOnRequest[]
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private workOnRequestService: WorkOnRequestService) {
     this.request = data.request;
-    this.workOnRequests = new Array<WorkOnRequest>;
+    this.worksOnRequest = new Array<WorkOnRequest>;
   }
 
   ngOnInit(): void {
@@ -251,8 +296,8 @@ export class RequestInfoDialogR implements OnInit {
 
   public refreshWorkOnRequest(): void {
     this.workOnRequestService.GetByRequestAll(this.request.id!).subscribe(data => {
-      this.workOnRequests = data;
-      console.log(this.workOnRequests);
+      this.worksOnRequest = data;
+      console.log(this.worksOnRequest);
     })
   }
 }

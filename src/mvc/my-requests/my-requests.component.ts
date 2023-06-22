@@ -24,7 +24,8 @@ export class MyRequestsComponent implements OnInit {
   public completedRequests: Array<Request>;
   public completedRequestsLoaded: boolean;
 
-  constructor(private requestService: RequestService, public dialog: MatDialog) {
+  constructor(private requestService: RequestService, public dialog: MatDialog, private workOnRequestService: WorkOnRequestService,
+              private snackBar: MatSnackBar) {
     this.activeRequests = new Array<Request>;
     this.completedRequests = new Array<Request>;
     this.completedRequestsLoaded = false;
@@ -41,16 +42,61 @@ export class MyRequestsComponent implements OnInit {
   }
 
   public refreshCompletedRequests(): void {
-    this.requestService.GetMyCompletedAll().subscribe(data => {
+    this.requestService.GetMyByImpCompletedAll().subscribe(data => {
       this.completedRequests = data;
       this.completedRequestsLoaded = true;
     });
   }
 
+  public completeRequest(request: Request): void{
+
+    const dialogRef = this.dialog.open(CompleteRequestDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == true){
+        this.workOnRequestService.AddMyComplete(request.id!).subscribe({
+          next: (result) => {
+            this.activeRequests.splice(this.activeRequests.indexOf(request,0),1);
+            this.snackBar.open('Заявка выполнена', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });
+          },
+          error: (error) => {
+            console.log(error.error);
+          },
+        });
+      }
+    });
+
+  }
+
+  public refuseRequest(request: Request): void{
+
+    const dialogRef = this.dialog.open(RefuseRequestDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == true){
+        this.workOnRequestService.AddMyRefusal(request.id!).subscribe({
+          next: (result) => {
+            this.activeRequests.splice(this.activeRequests.indexOf(request,0),1);
+            this.snackBar.open('Отказ оформлен', 'Ок', { duration: 5000, panelClass: "classicSnackBar" });
+          },
+          error: (error) => {
+            console.log(error.error);
+          },
+        });
+      }
+    })
+
+  }
+
   public createWorkOnRequest(request: Request): void {
     const dialogRef = this.dialog.open(AddWorkOnRequestDialog, {data: {request}, width: '30vw' })
   }
+
+  public openRequestInfo(request: Request) {
+    const dialogRef = this.dialog.open(WorksOnRequestInfoDialog, { data: { request } })
+  }
 }
+
 @Component({
   selector: 'add-work-on-request-dialog',
   templateUrl: 'add-work-on-request-dialog.html',
@@ -105,30 +151,52 @@ export class AddWorkOnRequestDialog implements OnInit {
   }
 }
 
+@Component({
+  selector: 'works-on-request-info-dialog',
+  templateUrl: 'works-on-request-info-dialog.html',
+})
+export class WorksOnRequestInfoDialog implements OnInit {
 
-  // public openRequestInfo(request: Request) {
-  //   const dialogRef = this.dialog.open(RequestInfoDialogA, { data: { request } })
-  // }
+  public request: Request;
+  public worksOnRequest: WorkOnRequest[]
 
-  // public completeRequest(request: Request) {
-  //   const dialogRef = this.dialog.open(CompleteRequestDialogA);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private workOnRequestService: WorkOnRequestService) {
+    this.request = data.request;
+    this.worksOnRequest = new Array<WorkOnRequest>;
+  }
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result == true) {
-  //       request.isComplete = true;
-  //       this.requestService.Update(request).subscribe(
-  //         {
-  //           next: (data) => {
-  //             this.activeRequests.splice(this.activeRequests.indexOf(request, 0), 1);
-  //             this.completedRequests.push(request);
-  //           },
-  //           error: (error) => { console.log(error) },
-  //         }
-  //       )
-  //     }
-  //   });
-  // }
+  ngOnInit(): void {
+    this.refreshWorkOnRequest();
+  }
 
-  // public changeRequest(request: Request) {
-  //   const dialogRef = this.dialog.open(ChangeRequestDialogA, { data: { request } });
-  // }
+  public refreshWorkOnRequest(): void {
+    this.workOnRequestService.GetByRequestAll(this.request.id!).subscribe(data => {
+      this.worksOnRequest = data;
+      console.log(this.worksOnRequest);
+    })
+  }
+}
+
+@Component({
+  selector: 'complete-request-dialog',
+  templateUrl: 'complete-request-dialog.html',
+})
+export class CompleteRequestDialog implements OnInit {
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+}
+
+@Component({
+  selector: 'refuse-request-dialog',
+  templateUrl: 'refuse-request-dialog.html',
+})
+export class RefuseRequestDialog implements OnInit {
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+}

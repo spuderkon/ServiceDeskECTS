@@ -16,8 +16,10 @@
 }
 
 .request {
-    width: 18vw;
+    width: 15vw;
+    height: 25vh;
     margin: 5px;
+    
 }
 
 .description {
@@ -30,7 +32,7 @@
     background-color: aliceblue !important;
 }
 
-.completedRequest {
+.completed-request {
     width: 15vw;
     margin: 5px;
     background-color: rgb(166, 223, 166);

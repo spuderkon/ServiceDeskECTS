@@ -16,6 +16,7 @@ export class Request {
     place: Place;
     requestStatus: RequestStatus;
     workOnRequests: Array<WorkOnRequest>;
+    importance: number | null;
 
     constructor() {
         this.id = null;
@@ -30,5 +31,6 @@ export class Request {
         this.place = new Place;
         this.requestStatus = new RequestStatus();
         this.workOnRequests = new Array<WorkOnRequest>;
+        this.importance = null;
     }
 }

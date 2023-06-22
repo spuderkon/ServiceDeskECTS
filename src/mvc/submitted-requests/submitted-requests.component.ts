@@ -216,11 +216,11 @@ export class CompleteRequestDialogSR implements OnInit {
 export class RequestInfoDialogSR implements OnInit {
 
   public request: Request;
-  public workOnRequests: WorkOnRequest[]
+  public worksOnRequest: WorkOnRequest[]
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private workOnRequestService:WorkOnRequestService) {
     this.request = data.request;
-    this.workOnRequests = new Array<WorkOnRequest>;
+    this.worksOnRequest = new Array<WorkOnRequest>;
   }
 
   ngOnInit(): void {
@@ -229,8 +229,8 @@ export class RequestInfoDialogSR implements OnInit {
 
   public refreshWorkOnRequest(): void {
     this.workOnRequestService.GetByMyRequestAll(this.request.id!).subscribe(data => {
-      this.workOnRequests = data;
-      console.log(this.workOnRequests);
+      this.worksOnRequest = data;
+      console.log(this.worksOnRequest);
     })
   }
 }

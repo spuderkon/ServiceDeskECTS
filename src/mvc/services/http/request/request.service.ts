@@ -72,7 +72,9 @@ export class RequestService {
       'description': request.description,
       'placeId': request.placeId,
       'isComplete': request.isComplete,
+      'requestStatusId': request.requestStatusId,
       'declarantId': request.declarantId,
+      'importance': request.importance,
     }
     console.log(body);
     return this.http.put<Request>(this.apiUrl + '/Update/' + request.id, body, {headers: this.headers});
